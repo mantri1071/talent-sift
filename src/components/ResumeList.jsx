@@ -60,24 +60,30 @@ if (parsedResumes && Array.isArray(parsedResumes.result)) {
     }
   }, [resumes, orgId]);
 
-const handleShortlist = async (candidate) => {
+  const handleShortlist = async (candidate) => {
   try {
     const res = await fetch("/api/sendEmail", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        name: candidate.name,
-        email: candidate.email,
-        phone: candidate.phone,
-        experience: candidate.experience,
-        score: candidate.Rank,              // ✅ fix field name
-        description: candidate.justification // ✅ fix field name
+        to: "76836363_3072500001415201@startitnow.mail.qntrl.com", // required
+        subject: "Shortlisted Candidate",                         // required
+        results: [
+          {
+            name: candidate.name,
+            email: candidate.email,
+            phone: candidate.phone,
+            experience: candidate.experience,
+            score: candidate.Rank,
+            justification: candidate.justification,
+          },
+        ],
       }),
     });
 
     let data = null;
     try {
-      data = await res.json(); // attempt JSON parse
+      data = await res.json(); // ✅ safe JSON parse
     } catch {
       console.error("Response not JSON, raw:", res);
     }
