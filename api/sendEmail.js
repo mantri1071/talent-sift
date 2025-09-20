@@ -1,6 +1,6 @@
-import { setApiKey, send } from "@sendgrid/mail";
+import sgMail from '@sendgrid/mail';   // ✅ Correct default import
 
-setApiKey(process.env.SENDGRID_API_KEY);
+sgMail.setApiKey(process.env.SENDGRID_API_KEY); // ✅ Uses env var
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
@@ -18,7 +18,7 @@ export default async function handler(req, res) {
 
     const msg = {
       to: "768363363_30725000001415201@startitnow.mail.qntrl.com", // QNTRL email
-      from: "sumanth1mantri@gmail.com", // must be verified in SendGrid
+      from: "sumanth1mantri@gmail.com", // ✅ Must be verified in SendGrid
       subject: `Shortlisted Candidate: ${name}`,
       text: `Candidate has been shortlisted.
 
@@ -42,10 +42,10 @@ ${description}`,
       `,
     };
 
-    await send(msg);
+    await sgMail.send(msg);
     return res.status(200).json({ success: true, message: "Email sent to QNTRL" });
   } catch (error) {
-    console.error("Send email error:", error);
+    console.error("Send email error:", JSON.stringify(error, null, 2));
     return res
       .status(500)
       .json({ success: false, error: error.message || "Failed to send email" });
