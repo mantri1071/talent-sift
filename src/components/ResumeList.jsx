@@ -60,9 +60,9 @@ if (parsedResumes && Array.isArray(parsedResumes.result)) {
     }
   }, [resumes, orgId]);
 
-  const handleShortlist = async (candidate) => {
+const handleShortlist = async (candidate) => {
   try {
-    const res = await fetch("/api/sendMail", {
+    const res = await fetch("/api/sendEmail", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -75,17 +75,22 @@ if (parsedResumes && Array.isArray(parsedResumes.result)) {
       }),
     });
 
+    // Parse JSON once
     const data = await res.json();
+
     if (res.ok) {
+      console.log("Email sent successfully:", data.message);
       alert(`Candidate ${candidate.name} sent to QNTRL.`);
     } else {
+      console.error("Error sending email:", data.error);
       alert(`Failed: ${data.error}`);
     }
-  } catch (err) {
-    console.error(err);
+  } catch (error) {
+    console.error("Fetch error:", error);
     alert("Error sending email.");
   }
 };
+
 
 
   const filteredResumes = useMemo(() => {
