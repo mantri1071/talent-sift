@@ -1,4 +1,4 @@
-import sgMail from '@sendgrid/mail';   // ✅ Correct default import
+import sgMail from '@sendgrid/mail';
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
@@ -16,12 +16,11 @@ export default async function handler(req, res) {
         .json({ success: false, error: "Missing email details or candidate data" });
     }
 
-
     const msg = {
       to: "76836363_3072500001415201@startitnow.mail.qntrl.com", // ✅ recipient email
       from: "sumanth1mantri@gmail.com", // ✅ must be verified in SendGrid
-      subject: payload.subject,
-      text: JSON.stringify(payload, null, 2),  // ✅ send JSON as plain text
+      subject: subject, // ✅ use the subject from request body
+      text: JSON.stringify(req.body, null, 2),  // ✅ send full request body as text
     };
 
     await sgMail.send(msg);
