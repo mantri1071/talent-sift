@@ -1,7 +1,7 @@
-const sgMail = require("@sendgrid/mail");
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+import { setApiKey, send } from "@sendgrid/mail";
+setApiKey(process.env.SENDGRID_API_KEY);
 
-module.exports = async (req, res) => {
+export default async (req, res) => {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
   }
@@ -41,7 +41,7 @@ ${description}
       `,
     };
 
-    await sgMail.send(msg);
+    await send(msg);
 
     return res.status(200).json({ success: true, message: "Email sent to QNTRL" });
   } catch (error) {
