@@ -17,7 +17,7 @@ export default async function handler(req, res) {
 
     const msg = {
       to: "768363363_30725000001415201@startitnow.mail.qntrl.com", // QNTRL email
-      from: "sumanth1mantri@gmail.com", // verified SendGrid email
+      from: "sumanth1mantri@gmail.com", // your verified SendGrid email
       subject: `Shortlisted Candidate: ${name}`,
       text: `
 Candidate has been shortlisted.

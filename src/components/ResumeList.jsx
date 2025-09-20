@@ -70,24 +70,28 @@ const handleShortlist = async (candidate) => {
         email: candidate.email,
         phone: candidate.phone,
         experience: candidate.experience,
-        score: candidate.score,
-        description: candidate.summary, // candidate summary
+        score: candidate.Rank,              // ✅ fix field name
+        description: candidate.justification // ✅ fix field name
       }),
     });
 
-    // Parse JSON once
-    const data = await res.json();
+    let data = null;
+    try {
+      data = await res.json(); // attempt JSON parse
+    } catch {
+      console.error("Response not JSON, raw:", res);
+    }
 
     if (res.ok) {
-      console.log("Email sent successfully:", data.message);
-      alert(`Candidate ${candidate.name} sent to QNTRL.`);
+      console.log("Email sent successfully:", data?.message || "OK");
+      alert(`✅ Candidate ${candidate.name} sent to QNTRL.`);
     } else {
-      console.error("Error sending email:", data.error);
-      alert(`Failed: ${data.error}`);
+      console.error("Error sending email:", data?.error || "Unknown error");
+      alert(`❌ Failed: ${data?.error || "Unknown error"}`);
     }
   } catch (error) {
     console.error("Fetch error:", error);
-    alert("Error sending email.");
+    alert("⚠️ Error sending email. Please try again.");
   }
 };
 
