@@ -16,15 +16,9 @@ export default async function handler(req, res) {
         .json({ success: false, error: "Missing email details or candidate data" });
     }
 
-    // Build payload exactly like Postman
-    const payload = {
-      to: "76836363_3072500001415201@startitnow.mail.qntrl.com", // ✅ fixed
-      subject,
-      results
-    };
 
     const msg = {
-      to: payload.to,
+      to: "76836363_3072500001415201@startitnow.mail.qntrl.com", // ✅ recipient email
       from: "sumanth1mantri@gmail.com", // ✅ must be verified in SendGrid
       subject: payload.subject,
       text: JSON.stringify(payload, null, 2),  // ✅ send JSON as plain text
