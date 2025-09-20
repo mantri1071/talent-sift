@@ -139,7 +139,7 @@ const JobFormStep1 = ({ formData, handleInputChange, onNewSubmit, onExistingSubm
             <div className="relative w-full max-w-6xl mx-auto">
               <div className="mb-6 text-center max-w-3xl mx-auto px-4">
                 <h1 className="text-4xl lg:text-5xl font-extrabold leading-tight text-orange-400">
-                  Resume Ranking <br />
+                  Resume <br />
                   <span className="text-gray-800 whitespace-nowrap">for Perfect Matches</span>
                 </h1>
                 <p className="mt-4 text-lg text-gray-800">
