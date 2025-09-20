@@ -62,7 +62,7 @@ if (parsedResumes && Array.isArray(parsedResumes.result)) {
 
   const handleShortlist = async (candidate) => {
   try {
-    const res = await fetch("/api/send-email", {
+    const res = await fetch("/api/sendMail", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
