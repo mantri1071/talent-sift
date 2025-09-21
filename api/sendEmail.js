@@ -16,11 +16,24 @@ export default async function handler(req, res) {
         .json({ success: false, error: "Missing email details or candidate data" });
     }
 
+    // ✅ Convert results array into a readable string
+    const candidateDetails = results
+      .map((c, i) => 
+        `Candidate ${i + 1}:\n` +
+        `Name: ${c.name}\n` +
+        `Email: ${c.email}\n` +
+        `Phone: ${c.phone}\n` +
+        `Experience: ${c.experience}\n` +
+        `Score: ${c.score}\n` +
+        `Justification: ${c.justification}\n`
+      )
+      .join("\n-------------------\n");
+
     const msg = {
-      to: "768363363_30725000001415521@startitnow.mail.qntrl.com", // ✅ recipient email
+      to: " 768363363_30725000001415521@startitnow.mail.qntrl.com", // ✅ Qntrl mailbox
       from: "sumanth1mantri@gmail.com", // ✅ must be verified in SendGrid
-      subject: subject, // ✅ use the subject from request body
-      text: JSON.stringify(req.body, null, 2),  // ✅ send full request body as text
+      subject: subject,
+      text: candidateDetails,  // ✅ plain text format
     };
 
     await sgMail.send(msg);
