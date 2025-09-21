@@ -16,24 +16,25 @@ export default async function handler(req, res) {
         .json({ success: false, error: "Missing email details or candidate data" });
     }
 
-    // ✅ Convert results array into a readable string
+    // ✅ Format results into a string (instead of JSON)
     const candidateDetails = results
-      .map((c, i) => 
-        `Candidate ${i + 1}:\n` +
-        `Name: ${c.name}\n` +
-        `Email: ${c.email}\n` +
-        `Phone: ${c.phone}\n` +
-        `Experience: ${c.experience}\n` +
-        `Score: ${c.score}\n` +
-        `Justification: ${c.justification}\n`
+      .map(
+        (c, i) =>
+          `Candidate ${i + 1}:\n` +
+          `Name: ${c.name}\n` +
+          `Email: ${c.email}\n` +
+          `Phone: ${c.phone}\n` +
+          `Experience: ${c.experience}\n` +
+          `Score: ${c.score}\n` +
+          `Justification: ${c.justification}\n`
       )
       .join("\n-------------------\n");
 
     const msg = {
-      to: " 768363363_30725000001415521@startitnow.mail.qntrl.com", // ✅ Qntrl mailbox
-      from: "sumanth1mantri@gmail.com", // ✅ must be verified in SendGrid
-      subject: subject,
-      text: candidateDetails,  // ✅ plain text format
+      to:  "768363363_30725000001415521@startitnow.mail.qntrl.com", // ✅ use dynamic to
+      from: "sumanth1mantri@gmail.com", // must be verified sender
+      subject,
+      text: candidateDetails, // ✅ send string body
     };
 
     await sgMail.send(msg);
