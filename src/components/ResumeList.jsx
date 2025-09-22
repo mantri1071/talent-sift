@@ -67,17 +67,18 @@ const handleShortlist = async (candidate) => {
     setLoadingId(candidate.candidateId); // mark as sending
 
     // Build a simple string instead of JSON array
-    const emailBody = `
-Shortlisted Candidate Details:
+//     const emailBody = `
+// Shortlisted Candidate Details:
 
-Name: ${candidate.name}
-Email: ${candidate.email}
-Phone: ${candidate.phone}
-Experience: ${candidate.experience} years
-Score: ${candidate.Rank}
-Justification: ${candidate.justification}
-    `;
-
+// Name: ${candidate.name}
+// Email: ${candidate.email}
+// Phone: ${candidate.phone}
+// Experience: ${candidate.experience} years
+// Score: ${candidate.Rank}
+// Justification: ${candidate.justification}
+//     `;
+//   console.log("emailBody:", emailBody);
+  
     const res = await fetch("/api/sendEmail", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
