@@ -62,10 +62,21 @@ if (parsedResumes && Array.isArray(parsedResumes.result)) {
     }
   }, [resumes, orgId]);
 
-
 const handleShortlist = async (candidate) => {
   try {
     setLoadingId(candidate.candidateId); // mark as sending
+
+    // Build a simple string instead of JSON array
+    const emailBody = `
+Shortlisted Candidate Details:
+
+Name: ${candidate.name}
+Email: ${candidate.email}
+Phone: ${candidate.phone}
+Experience: ${candidate.experience} years
+Score: ${candidate.Rank}
+Justification: ${candidate.justification}
+    `;
 
     const res = await fetch("/api/sendEmail", {
       method: "POST",
@@ -73,41 +84,32 @@ const handleShortlist = async (candidate) => {
       body: JSON.stringify({
         to: "768363363_30725000001415521@startitnow.mail.qntrl.com",
         subject: "Shortlisted Candidate",
-        results: [
-          {
-            name: candidate.name,
-            email: candidate.email,
-            phone: candidate.phone,
-            experience: candidate.experience,
-            score: candidate.Rank,
-            justification: candidate.justification
-          },
-        ],
+        text: emailBody,  // ✅ send as plain string
       }),
     });
 
-    const data = await res.json();
+    let data = null;
+    try {
+      data = await res.json();
+    } catch {
+      console.error("Response not JSON, raw:", res);
+    }
 
     if (res.ok) {
-      // ✅ mark candidate as shortlisted in local state
-      setResumes((prev) =>
-        prev.map((res) =>
-          res.candidateId === candidate.candidateId
-            ? { ...res, shortlisted: true }
-            : res
-        )
-      );
       console.log("Email sent successfully:", data?.message || "OK");
+      alert(`✅ Candidate ${candidate.name} sent to QNTRL.`);
     } else {
+      console.error("Error sending email:", data?.error || "Unknown error");
       alert(`❌ Failed: ${data?.error || "Unknown error"}`);
     }
   } catch (error) {
     console.error("Fetch error:", error);
     alert("⚠️ Error sending email. Please try again.");
   } finally {
-    setLoadingId(null);
+    setLoadingId(null); // reset loading state
   }
 };
+
 
   const filteredResumes = useMemo(() => {
   const query = searchQuery.toLowerCase().trim();
