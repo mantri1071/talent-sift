@@ -33,6 +33,8 @@ ${c.justification || "No justification provided."}
       )
       .join("\n========================\n");
 
+      console.log("Candidate Details:", candidateDetails); // Debugging log
+
     const msg = {
       to,
       from: "sumanth1mantri@gmail.com", // must be verified in SendGrid
