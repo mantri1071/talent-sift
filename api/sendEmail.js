@@ -27,27 +27,27 @@ Score       : ${results.Rank  || results.score || "N/A"}
 Justification:
 ${results.justification || "No justification provided."}
 `
-let arpita = `Candidate Details: 
-Name        : Arpita
-Email       : arpita@gmail.com
-Phone       : +91 987654321
-Experience  : 30 years
-Score       : 4
-Justification:
-`
+// let arpita = `Candidate Details: 
+// Name        : Arpita
+// Email       : arpita@gmail.com
+// Phone       : +91 987654321
+// Experience  : 30 years
+// Score       : 4
+// Justification:
+// `
     const msg = {
       to,
       from: "sumanth1mantri@gmail.com", // must be verified in SendGrid
       subject,
       text: candidateDetails, // ✅ always same structure
     };
-    const msg2 = {
-      to,
-      from: "sumanth1mantri@gmail.com", // must be verified in SendGrid
-      subject,
-      text: arpita, // ✅ always same structure
-    };
-     await sgMail.send(msg2);
+    // const msg2 = {
+    //   to,
+    //   from: "sumanth1mantri@gmail.com", // must be verified in SendGrid
+    //   subject,
+    //   text: arpita, // ✅ always same structure
+    // };
+    //  await sgMail.send(msg2);
 
     console.log("Candidate Details:", candidateDetails); // Debugging log
     await sgMail.send(msg);
