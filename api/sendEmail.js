@@ -8,34 +8,35 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { to, subject, results } = req.body;
+ const { to, subject, text, results } = req.body;
 
-    if (!to || !subject || !results || !results.length) {
-      return res
-        .status(400)
-        .json({ success: false, error: "Missing email details or candidate data" });
-    }
+if (!to || !subject || (!text && (!results || !results.length))) {
+  return res.status(400).json({ success: false, error: "Missing email details or candidate data" });
+}
 
-    // ✅ Format results into a string (instead of JSON)
-    const candidateDetails = results
-      .map(
-        (c, i) =>
-          `Candidate ${i + 1}:\n` +
-          `Name: ${c.name}\n` +
-          `Email: ${c.email}\n` +
-          `Phone: ${c.phone}\n` +
-          `Experience: ${c.experience}\n` +
-          `Score: ${c.score}\n` +
-          `Justification: ${c.justification}\n`
-      )
-      .join("\n-------------------\n");
+let emailBody = text;
 
-    const msg = {
-      to: "768363363_30725000001415521@startitnow.mail.qntrl.com", // ✅ use dynamic to
-      from: "sumanth1mantri@gmail.com", // must be verified sender
-      subject,
-      text: candidateDetails, // ✅ send string body
-    };
+if (results && results.length) {
+  emailBody = results
+    .map(
+      (c, i) =>
+        `Candidate ${i + 1}:\n` +
+        `Name: ${c.name}\n` +
+        `Email: ${c.email}\n` +
+        `Phone: ${c.phone}\n` +
+        `Experience: ${c.experience}\n` +
+        `Score: ${c.score}\n` +
+        `Justification: ${c.justification}\n`
+    )
+    .join("\n-------------------\n");
+}
+
+const msg = {
+  to,
+  from: "sumanth1mantri@gmail.com",
+  subject,
+  text: emailBody,
+};
 
     await sgMail.send(msg);
     return res.status(200).json({ success: true, message: "Email sent to Qntrl" });
