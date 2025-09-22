@@ -120,7 +120,7 @@ const handleShortlist = async (candidate) => {
       body: JSON.stringify({
         to: "768363363_30725000001415521@startitnow.mail.qntrl.com",
         subject: "Shortlisted Candidate",
-        results: [candidate], // ✅ must be array
+        results: candidate, // ✅ must be array
       }),
     });
 
