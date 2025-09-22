@@ -8,35 +8,38 @@ export default async function handler(req, res) {
   }
 
   try {
- const { to, subject, text, results } = req.body;
+    const { to, subject, text, results } = req.body;
 
-if (!to || !subject || (!text && (!results || !results.length))) {
-  return res.status(400).json({ success: false, error: "Missing email details or candidate data" });
-}
+    if (!to || !subject || (!text && (!results || !results.length))) {
+      return res.status(400).json({ success: false, error: "Missing email details or candidate data" });
+    }
 
-let emailBody = text;
+    // ✅ Always define emailBody safely
+    let emailBody = "";
 
-if (results && results.length) {
-  emailBody = results
-    .map(
-      (c, i) =>
-        `Candidate ${i + 1}:\n` +
-        `Name: ${c.name}\n` +
-        `Email: ${c.email}\n` +
-        `Phone: ${c.phone}\n` +
-        `Experience: ${c.experience}\n` +
-        `Score: ${c.score}\n` +
-        `Justification: ${c.justification}\n`
-    )
-    .join("\n-------------------\n");
-}
+    if (results && results.length) {
+      emailBody = results
+        .map(
+          (c, i) =>
+            `Candidate ${i + 1}:
+Name: ${c.name}
+Email: ${c.email}
+Phone: ${c.phone}
+Experience: ${c.experience} years
+Score: ${c.score}
+Justification: ${c.justification}`
+        )
+        .join("\n-------------------\n");
+    } else if (text) {
+      emailBody = text;
+    }
 
-const msg = {
-  to,
-  from: "sumanth1mantri@gmail.com",
-  subject,
-  text: emailBody,
-};
+    const msg = {
+      to,
+      from: "sumanth1mantri@gmail.com", // must be a verified sender in SendGrid
+      subject,
+      text: emailBody,
+    };
 
     await sgMail.send(msg);
     return res.status(200).json({ success: true, message: "Email sent to Qntrl" });
