@@ -21,6 +21,8 @@ const ResumeList = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [caseId, setCaseId] = useState(null);
+  const [loadingId, setLoadingId] = useState(null);
+
 
   useEffect(() => {
     try {
@@ -60,14 +62,17 @@ if (parsedResumes && Array.isArray(parsedResumes.result)) {
     }
   }, [resumes, orgId]);
 
-  const handleShortlist = async (candidate) => {
+
+const handleShortlist = async (candidate) => {
   try {
+    setLoadingId(candidate.candidateId); // mark as sending
+
     const res = await fetch("/api/sendEmail", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        to: "768363363_30725000001415521@startitnow.mail.qntrl.com",  // required
-        subject: "Shortlisted Candidate",                         // required
+        to: "768363363_30725000001415521@startitnow.mail.qntrl.com",
+        subject: "Shortlisted Candidate",
         results: [
           {
             name: candidate.name,
@@ -81,27 +86,28 @@ if (parsedResumes && Array.isArray(parsedResumes.result)) {
       }),
     });
 
-    let data = null;
-    try {
-      data = await res.json(); // ✅ safe JSON parse
-    } catch {
-      console.error("Response not JSON, raw:", res);
-    }
+    const data = await res.json();
 
     if (res.ok) {
+      // ✅ mark candidate as shortlisted in local state
+      setResumes((prev) =>
+        prev.map((res) =>
+          res.candidateId === candidate.candidateId
+            ? { ...res, shortlisted: true }
+            : res
+        )
+      );
       console.log("Email sent successfully:", data?.message || "OK");
-      alert(`✅ Candidate ${candidate.name} sent to QNTRL.`);
     } else {
-      console.error("Error sending email:", data?.error || "Unknown error");
       alert(`❌ Failed: ${data?.error || "Unknown error"}`);
     }
   } catch (error) {
     console.error("Fetch error:", error);
     alert("⚠️ Error sending email. Please try again.");
+  } finally {
+    setLoadingId(null);
   }
 };
-
-
 
   const filteredResumes = useMemo(() => {
   const query = searchQuery.toLowerCase().trim();
@@ -283,15 +289,27 @@ if (parsedResumes && Array.isArray(parsedResumes.result)) {
                     <div className="text-2xl font-bold text-blue-900">{resume.name}</div> 
                     <div className="text-blue-900 font-semibold">Score: {resume.Rank} {getRankLabel(resume.Rank)}</div>
                     <div className="text-blue-900 font-semibold">Experience: {resume.experience ? `${resume.experience} yrs` : 'null'}</div>
+
+{resume.shortlisted ? (
+  <div className="text-green-700 font-bold">✅ Shortlisted</div>
+) : (
+  <button
+    onClick={() => handleShortlist(resume)}
+    disabled={loadingId === resume.candidateId}
+    className={`px-4 py-2 rounded transition ${
+      loadingId === resume.candidateId
+        ? "bg-gray-400 cursor-not-allowed"
+        : "bg-green-600 hover:bg-green-700 text-white"
+    }`}
+  >
+    {loadingId === resume.candidateId ? "Sending..." : "Shortlist"}
+  </button>
+)}
+
+
                     <div className="text-blue-700 font-semibold">{resume.phone || 'No phone'}</div>
                     <div className="text-blue-700 font-semibold">{resume.email || 'No email'}</div>
                   </div>
-<button
-  onClick={() => handleShortlist(resume)}  // Pass the candidate here
-  className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition"
->
-  Shortlist
-</button>
 
                   <div className="text-gray-800 mt-2 text-sm whitespace-pre-line">
                     {resume.justification}
