@@ -318,8 +318,11 @@ const handleShortlist = async (candidate) => {
                   <div className="text-gray-800 mt-2 text-sm whitespace-pre-line">
                     {resume.justification}
                   </div>
-
-{/* Button at bottom */}
+                </motion.li>
+              ))
+            )}
+          </ul>
+          {/* Button at bottom */}
 <div className="w-full flex justify-center mt-8">
   <button
     onClick={() =>
@@ -332,10 +335,6 @@ const handleShortlist = async (candidate) => {
   </button>
 </div>
 
-                </motion.li>
-              ))
-            )}
-          </ul>
         </motion.div>
       </div>
     </div>
