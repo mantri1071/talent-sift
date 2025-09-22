@@ -25,8 +25,8 @@ Candidate ${i + 1}
 Name        : ${c.name || "N/A"}
 Email       : ${c.email || "N/A"}
 Phone       : ${c.phone || "N/A"}
-Experience  : ${c.experience ?? "N/A"} years
-Score       : ${c.Rank ?? "N/A"}
+Experience  : ${c.experience || "N/A"} years
+Score       : ${c.Rank  || c.score || "N/A"}
 Justification:
 ${c.justification || "No justification provided."}
 `
