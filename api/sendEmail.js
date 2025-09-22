@@ -18,15 +18,14 @@ export default async function handler(req, res) {
 
     // ✅ Standardized format for every candidate
     const candidateDetails = `
-Candidate ${i + 1}
-----------------------
-Name        : ${c.name || "N/A"}
-Email       : ${c.email || "N/A"}
-Phone       : ${c.phone || "N/A"}
-Experience  : ${c.experience || "N/A"} years
-Score       : ${c.Rank  || c.score || "N/A"}
+
+Name        : ${results.name || "N/A"}
+Email       : ${results.email || "N/A"}
+Phone       : ${results.phone || "N/A"}
+Experience  : ${results.experience || "N/A"} years
+Score       : ${results.Rank  || results.score || "N/A"}
 Justification:
-${c.justification || "No justification provided."}
+${results.justification || "No justification provided."}
 `
     const msg = {
       to,
