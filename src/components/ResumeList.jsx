@@ -77,7 +77,7 @@ const handleShortlist = async (candidate) => {
 // Score: ${candidate.Rank}
 // Justification: ${candidate.justification}
 //     `;
-  console.log("emailBody:", emailBody);
+ // console.log("emailBody:", emailBody);
   
     const res = await fetch("/api/sendEmail", {
       method: "POST",
