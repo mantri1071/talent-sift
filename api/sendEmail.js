@@ -31,7 +31,7 @@ export default async function handler(req, res) {
       .join("\n-------------------\n");
 
     const msg = {
-      to:  "768363363_30725000001415521@startitnow.mail.qntrl.com", // ✅ use dynamic to
+      to, // ✅ use dynamic to
       from: "sumanth1mantri@gmail.com", // must be verified sender
       subject,
       text: candidateDetails, // ✅ send string body

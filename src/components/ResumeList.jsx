@@ -80,7 +80,7 @@ const handleShortlist = async (candidate) => {
             phone: candidate.phone,
             experience: candidate.experience,
             score: candidate.Rank,
-            justification: candidate.justification,
+            justification: candidate.justification
           },
         ],
       }),
