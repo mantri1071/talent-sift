@@ -17,9 +17,7 @@ export default async function handler(req, res) {
     }
 
     // ✅ Standardized format for every candidate
-    const candidateDetails = results
-      .map(
-        (c, i) => `
+    const candidateDetails = `
 Candidate ${i + 1}
 ----------------------
 Name        : ${c.name || "N/A"}
@@ -30,9 +28,6 @@ Score       : ${c.Rank  || c.score || "N/A"}
 Justification:
 ${c.justification || "No justification provided."}
 `
-      )
-      .join("\n========================\n");
-
     const msg = {
       to,
       from: "sumanth1mantri@gmail.com", // must be verified in SendGrid
