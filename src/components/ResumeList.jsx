@@ -319,6 +319,19 @@ const handleShortlist = async (candidate) => {
                     {resume.justification}
                   </div>
 
+{/* Button at bottom */}
+<div className="w-full flex justify-center mt-8">
+  <button
+    onClick={() =>
+      window.location.href =
+        "https://core.qntrl.com/blueprint/startitnow/job/processtab/30725000001415521/30725000000000419"
+    }
+    className="bg-blue-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-blue-700 transition"
+  >
+    Go to Qntrl
+  </button>
+</div>
+
                 </motion.li>
               ))
             )}
