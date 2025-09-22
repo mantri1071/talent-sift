@@ -62,42 +62,80 @@ if (parsedResumes && Array.isArray(parsedResumes.result)) {
     }
   }, [resumes, orgId]);
 
+// const handleShortlist = async (candidate) => {
+//   try {
+//     setLoadingId(candidate.candidateId); // mark as sending
+  
+//     const res = await fetch("/api/sendEmail", {
+//       method: "POST",
+//       headers: { "Content-Type": "application/json" },
+//       body: JSON.stringify({
+//         to: "768363363_30725000001415521@startitnow.mail.qntrl.com",
+//         subject: "Shortlisted Candidate",
+//         results: candidate, // send candidate data as array
+//       }),
+//     });
+
+//        const data = await res.json();
+
+//     if (res.ok) {
+//       // ✅ mark candidate as shortlisted in local state shortlist button functionality
+//       setResumes((prev) =>
+//         prev.map((res) =>
+//           res.candidateId === candidate.candidateId
+//             ? { ...res, shortlisted: true }
+//             : res
+//         )
+//       );  
+
+//     let data = null;
+//     try {
+//       data = await res.json();
+//     } catch {
+//       console.error("Response not JSON, raw:", res);
+//     }
+
+//     if (res.ok) {
+//       console.log("Email sent successfully:", data?.message || "OK");
+//       alert(`✅ Candidate ${candidate.name} sent to QNTRL.`);
+//     } else {
+//       console.error("Error sending email:", data?.error || "Unknown error");
+//       alert(`❌ Failed: ${data?.error || "Unknown error"}`);
+//     }
+//   } catch (error) {
+//     console.error("Fetch error:", error);
+//     alert("⚠️ Error sending email. Please try again.");
+//   } finally {
+//     setLoadingId(null); // reset loading state
+//   }
+// };
+
 const handleShortlist = async (candidate) => {
   try {
     setLoadingId(candidate.candidateId); // mark as sending
 
-    // Build a simple string instead of JSON array
-//     const emailBody = `
-// Shortlisted Candidate Details:
-
-// Name: ${candidate.name}
-// Email: ${candidate.email}
-// Phone: ${candidate.phone}
-// Experience: ${candidate.experience} years
-// Score: ${candidate.Rank}
-// Justification: ${candidate.justification}
-//     `;
- // console.log("emailBody:", emailBody);
-  
     const res = await fetch("/api/sendEmail", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         to: "768363363_30725000001415521@startitnow.mail.qntrl.com",
         subject: "Shortlisted Candidate",
-        //text: emailBody,  // ✅ send as plain string
-        results: candidate, // send candidate data as array
+        results: [candidate], // ✅ must be array
       }),
     });
 
-    let data = null;
-    try {
-      data = await res.json();
-    } catch {
-      console.error("Response not JSON, raw:", res);
-    }
+    const data = await res.json(); // ✅ only once
 
     if (res.ok) {
+      // ✅ mark candidate as shortlisted in local state
+      setResumes((prev) =>
+        prev.map((res) =>
+          res.candidateId === candidate.candidateId
+            ? { ...res, shortlisted: true }
+            : res
+        )
+      );
+
       console.log("Email sent successfully:", data?.message || "OK");
       alert(`✅ Candidate ${candidate.name} sent to QNTRL.`);
     } else {
