@@ -10,7 +10,7 @@ export default async function handler(req, res) {
   try {
     const { to, subject, results } = req.body;
 
-    if (!to || !subject || !results || !results.length) {
+    if (!to || !subject || !results) {
       return res
         .status(400)
         .json({ success: false, error: "Missing email details or candidate data" });
@@ -33,8 +33,6 @@ ${c.justification || "No justification provided."}
       )
       .join("\n========================\n");
 
-      console.log("Candidate Details:", candidateDetails); // Debugging log
-
     const msg = {
       to,
       from: "sumanth1mantri@gmail.com", // must be verified in SendGrid
@@ -42,6 +40,7 @@ ${c.justification || "No justification provided."}
       text: candidateDetails, // ✅ always same structure
     };
 
+    console.log("Candidate Details:", candidateDetails); // Debugging log
     await sgMail.send(msg);
     return res.status(200).json({ success: true, message: "Email sent to Qntrl" });
   } catch (error) {

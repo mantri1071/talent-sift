@@ -86,7 +86,7 @@ const handleShortlist = async (candidate) => {
         to: "768363363_30725000001415521@startitnow.mail.qntrl.com",
         subject: "Shortlisted Candidate",
         //text: emailBody,  // ✅ send as plain string
-        results: [candidate], // send candidate data as array
+        results: candidate, // send candidate data as array
       }),
     });
 
