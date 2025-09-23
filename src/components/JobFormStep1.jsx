@@ -292,16 +292,16 @@ const JobFormStep1 = ({ formData, handleInputChange, onNewSubmit, onExistingSubm
                     <div className="space-y-2">
                       <Label className="flex items-center gap-2">                   
                       <Briefcase className="w-4 h-4" />
-                      Domain <span className="text-red-500">*</span>
+                      Industry <span className="text-red-500">*</span>
                     </Label>
                     <Input
                       placeholder="e.g. Information Technology, Finance, Healthcare"
-                      value={formData.domain}
-                      onChange={(e) => handleInputChange('domain', e.target.value)}
+                      value={formData.industry}
+                      onChange={(e) => handleInputChange('industry', e.target.value)}
                       className="bg-white/70"
                       disabled={isLoading}
                     />
-                    {errors.domain && <p className="text-red-600 text-sm">{errors.domain}</p>}
+                    {errors.industry && <p className="text-red-600 text-sm">{errors.industry}</p>}
                   </div>
 
 

@@ -374,6 +374,18 @@ const handleShortlist = async (candidate) => {
                         <p className="text-orange-500 font-medium">
               Showing {filteredResumes.length} result{filteredResumes.length !== 1 ? 's' : ''}
             </p>
+                                    {/* Button at bottom */}
+<div className="w-full flex right-2 mt-8">
+  <button
+    onClick={() =>
+      window.location.href =
+        "https://core.qntrl.com/blueprint/startitnow/job/processtab/30725000001415521/30725000000000419"
+    }
+    className="bg-blue-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-blue-700 transition"
+  >
+    Candidate Management
+  </button>
+</div>
           </div>
 
           {loading && (
@@ -424,20 +436,6 @@ const handleShortlist = async (candidate) => {
     {loadingId === resume.id ? "Sending..." : "Shortlist"}
   </button>
 )}
-
-
-                  {/* Button at bottom */}
-<div className="w-full flex right-2 mt-8">
-  <button
-    onClick={() =>
-      window.location.href =
-        "https://core.qntrl.com/blueprint/startitnow/job/processtab/30725000001415521/30725000000000419"
-    }
-    className="bg-blue-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-blue-700 transition"
-  >
-    Candidate Management
-  </button>
-</div>
                 {resume.justification && (
                   <p className="text-sm text-gray-700 italic mb-3">"{resume.justification}"</p>
                 )}
