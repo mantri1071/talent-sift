@@ -207,13 +207,14 @@ const handleShortlist = async (candidate) => {
 
     if (res.ok) {
       // ✅ mark candidate as shortlisted in local state
-      setResumes((prev) =>
-        prev.map((res) =>
-          res.candidateId === candidate.candidateId
-            ? { ...res, shortlisted: true }
-            : res
-        )
-      );
+ setSearchedResumes((prev) =>
+  prev.map((res) =>
+    res.candidateId === candidate.candidateId
+      ? { ...res, shortlisted: true }
+      : res
+  )
+);
+
 
       console.log("Email sent successfully:", data?.message || "OK");
       alert(`✅ Candidate ${candidate.name} sent to QNTRL.`);
