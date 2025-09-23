@@ -23,13 +23,13 @@ const ResumeList = () => {
   const [caseId, setCaseId] = useState(null);
   const [loadingId, setLoadingId] = useState(null);
 
-
   useEffect(() => {
     try {
+      // Load user key skills from localStorage
       const storedSkills = localStorage.getItem("keySkills");
       const parsedSkills = storedSkills ? JSON.parse(storedSkills) : [];
       setUserKeySkills(Array.isArray(parsedSkills) ? parsedSkills : []);
-
+      
       const storedResumes = localStorage.getItem("resumeResults");
 const parsedResumes = storedResumes ? JSON.parse(storedResumes) : null;
 
@@ -277,7 +277,6 @@ const handleShortlist = async (candidate) => {
               {userKeySkills.length > 0 ? userKeySkills.join(', ') : 'No key skills available'}
             </div>
           </div>
-
         </div>
 
         {/* Resume Results */}
@@ -303,6 +302,19 @@ const handleShortlist = async (candidate) => {
         >
           Home
         </button>
+
+                  {/* Button at bottom */}
+<div className="w-full flex right-2 mt-8">
+  <button
+    onClick={() =>
+      window.location.href =
+        "https://core.qntrl.com/blueprint/startitnow/job/processtab/30725000001415521/30725000000000419"
+    }
+    className="bg-blue-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-blue-700 transition"
+  >
+    Candidate Management
+  </button>
+</div>
       </div>
 
           <div className="flex justify-between items-center mb-4">
@@ -360,19 +372,6 @@ const handleShortlist = async (candidate) => {
               ))
             )}
           </ul>
-          {/* Button at bottom */}
-<div className="w-full flex justify-center mt-8">
-  <button
-    onClick={() =>
-      window.location.href =
-        "https://core.qntrl.com/blueprint/startitnow/job/processtab/30725000001415521/30725000000000419"
-    }
-    className="bg-blue-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-blue-700 transition"
-  >
-    Go to Qntrl
-  </button>
-</div>
-
         </motion.div>
       </div>
     </div>

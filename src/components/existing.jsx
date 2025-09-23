@@ -20,6 +20,7 @@ const ResumeList = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [searched, setSearched] = useState(false);
+    const [loadingId, setLoadingId] = useState(null);
 
   // Load from localStorage after a search
   useEffect(() => {
@@ -183,6 +184,51 @@ const fetchResumesByExecutionId = useCallback(async () => {
     <div {...props} key={index} className="h-5 w-5 rounded-full bg-blue-600 shadow-md cursor-pointer" />
   );
 
+  //user key skills from localStorage
+  const allKeySkills = useMemo(() => {
+  return [...new Set(combinedResumes.flatMap(r => r.keySkills || []))];
+}, [combinedResumes]);
+
+const handleShortlist = async (candidate) => {
+  try {
+    setLoadingId(candidate.candidateId); // mark as sending
+
+    const res = await fetch("/api/sendEmail", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        to: "768363363_30725000001415521@startitnow.mail.qntrl.com",
+        subject: "Shortlisted Candidate",
+        results: candidate, // ✅ must be array
+      }),
+    });
+
+    const data = await res.json(); // ✅ only once
+
+    if (res.ok) {
+      // ✅ mark candidate as shortlisted in local state
+      setResumes((prev) =>
+        prev.map((res) =>
+          res.candidateId === candidate.candidateId
+            ? { ...res, shortlisted: true }
+            : res
+        )
+      );
+
+      console.log("Email sent successfully:", data?.message || "OK");
+      alert(`✅ Candidate ${candidate.name} sent to QNTRL.`);
+    } else {
+      console.error("Error sending email:", data?.error || "Unknown error");
+      alert(`❌ Failed: ${data?.error || "Unknown error"}`);
+    }
+  } catch (error) {
+    console.error("Fetch error:", error);
+    alert("⚠️ Error sending email. Please try again.");
+  } finally {
+    setLoadingId(null); // reset loading state
+  }
+};
+
   return (
     <div className="min-h-screen w-full bg-gray-100 p-4">
       <div className="bg-white/80 shadow-lg rounded-xl w-full p-4 flex flex-col md:flex-row gap-6">
@@ -304,6 +350,23 @@ const fetchResumesByExecutionId = useCallback(async () => {
               Phone
             </label>
           </div>
+          <div className="mt-6">
+  <h3 className="font-bold text-gray-800 mb-3 text-lg">🛠️ Key Skills</h3>
+  <div className="flex flex-wrap gap-2 bg-white border border-blue-200 rounded-md p-3 shadow-inner min-h-[40px]">
+    {allKeySkills.length > 0 ? (
+      allKeySkills.map((skill, idx) => (
+        <span
+          key={idx}
+          className="px-2 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-lg"
+        >
+          {skill}
+        </span>
+      ))
+    ) : (
+      <p className="text-gray-500 text-sm">No key skills available</p>
+    )}
+  </div>
+</div>
         </div>
 
         {/* Resume List */}
@@ -349,6 +412,22 @@ const fetchResumesByExecutionId = useCallback(async () => {
                 <p className="text-sm text-blue-700 mb-3">
                   <strong>Phone:</strong> {resume.phone}
                 </p>
+                {resume.shortlisted ? (
+  <div className="text-green-700 font-bold">✅ Shortlisted</div>
+) : (
+  <button
+    onClick={() => handleShortlist(resume)}
+    disabled={loadingId === resume.candidateId}
+    className={`px-4 py-2 rounded transition ${
+      loadingId === resume.candidateId
+        ? "bg-gray-400 cursor-not-allowed"
+        : "bg-green-600 hover:bg-green-700 text-white"
+    }`}
+  >
+    {loadingId === resume.candidateId ? "Sending..." : "Shortlist"}
+  </button>
+)}
+
                 {resume.justification && (
                   <p className="text-sm text-gray-700 italic mb-3">"{resume.justification}"</p>
                 )}
