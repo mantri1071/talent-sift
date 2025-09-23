@@ -191,7 +191,7 @@ const fetchResumesByExecutionId = useCallback(async () => {
 
 const handleShortlist = async (candidate) => {
   try {
-    setLoadingId(candidate.candidateId); // mark as sending
+    setLoadingId(candidate.id); // use resume.id
 
     const res = await fetch("/api/sendEmail", {
       method: "POST",
@@ -199,34 +199,29 @@ const handleShortlist = async (candidate) => {
       body: JSON.stringify({
         to: "768363363_30725000001415521@startitnow.mail.qntrl.com",
         subject: "Shortlisted Candidate",
-        results: candidate, // ✅ must be array
+        results: candidate,
       }),
     });
 
-    const data = await res.json(); // ✅ only once
+    const data = await res.json();
 
     if (res.ok) {
-      // ✅ mark candidate as shortlisted in local state
- setSearchedResumes((prev) =>
-  prev.map((res) =>
-    res.candidateId === candidate.candidateId
-      ? { ...res, shortlisted: true }
-      : res
-  )
-);
+      // ✅ update searchedResumes state
+      setSearchedResumes((prev) =>
+        prev.map((res) =>
+          res.id === candidate.id ? { ...res, shortlisted: true } : res
+        )
+      );
 
-
-      console.log("Email sent successfully:", data?.message || "OK");
       alert(`✅ Candidate ${candidate.name} sent to QNTRL.`);
     } else {
-      console.error("Error sending email:", data?.error || "Unknown error");
       alert(`❌ Failed: ${data?.error || "Unknown error"}`);
     }
   } catch (error) {
     console.error("Fetch error:", error);
     alert("⚠️ Error sending email. Please try again.");
   } finally {
-    setLoadingId(null); // reset loading state
+    setLoadingId(null);
   }
 };
 
@@ -413,22 +408,36 @@ const handleShortlist = async (candidate) => {
                 <p className="text-sm text-blue-700 mb-3">
                   <strong>Phone:</strong> {resume.phone}
                 </p>
-                {resume.shortlisted ? (
+ 
+{resume.shortlisted ? (
   <div className="text-green-700 font-bold">✅ Shortlisted</div>
 ) : (
   <button
     onClick={() => handleShortlist(resume)}
-    disabled={loadingId === resume.candidateId}
+    disabled={loadingId === resume.id} // use id here
     className={`px-4 py-2 rounded transition ${
-      loadingId === resume.candidateId
+      loadingId === resume.id
         ? "bg-gray-400 cursor-not-allowed"
         : "bg-green-600 hover:bg-green-700 text-white"
     }`}
   >
-    {loadingId === resume.candidateId ? "Sending..." : "Shortlist"}
+    {loadingId === resume.id ? "Sending..." : "Shortlist"}
   </button>
 )}
 
+
+                  {/* Button at bottom */}
+<div className="w-full flex right-2 mt-8">
+  <button
+    onClick={() =>
+      window.location.href =
+        "https://core.qntrl.com/blueprint/startitnow/job/processtab/30725000001415521/30725000000000419"
+    }
+    className="bg-blue-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-blue-700 transition"
+  >
+    Candidate Management
+  </button>
+</div>
                 {resume.justification && (
                   <p className="text-sm text-gray-700 italic mb-3">"{resume.justification}"</p>
                 )}
