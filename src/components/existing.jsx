@@ -1,12 +1,13 @@
 import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { Range } from 'react-range';
+import { useNavigate } from 'react-router-dom';  // <-- Import useNavigate
 
 const getRankLabel = (score) => {
   return '';
 };
 
-const ResumeList = () => {
+const Existing = () => {
   const [uploadedResumes, setUploadedResumes] = useState([]);
   const [searchedResumes, setSearchedResumes] = useState([]);
   const [orgId] = useState('2');
@@ -20,7 +21,8 @@ const ResumeList = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [searched, setSearched] = useState(false);
-    const [loadingId, setLoadingId] = useState(null);
+  const [loadingId, setLoadingId] = useState(null);
+  const navigate = useNavigate(); // <-- Initialize navigate hook
 
   // Load from localStorage after a search
   useEffect(() => {
@@ -181,7 +183,7 @@ const fetchResumesByExecutionId = useCallback(async () => {
   }, [searchQuery, keySkillQuery, scoreRange, experienceRange, filterEmail, filterPhone, combinedResumes]);
 
   const renderScoreThumb = ({ index, props }) => (
-    <div {...props} key={index} className="h-5 w-5 rounded-full bg-blue-600 shadow-md cursor-pointer" />
+    <div {...props} key={index} className="h-5 w-5 rounded-full bg-orange-400 shadow-md cursor-pointer" />
   );
 
   //user key skills from localStorage
@@ -226,227 +228,249 @@ const handleShortlist = async (candidate) => {
 };
 
   return (
-    <div className="min-h-screen w-full bg-gray-100 p-4">
-      <div className="bg-white/80 shadow-lg rounded-xl w-full p-4 flex flex-col md:flex-row gap-6">
-        {/* Sidebar Filters */}
-        <div className="w-full md:w-64 bg-gray-100 rounded-xl p-4 shadow-md flex-shrink-0">
-          <h3 className="font-bold text-gray-800 mb-5 text-xl">🔍 Filter Options</h3>
+  
+    <div className="min-h-screen w-full bg-white p-4">
+  <div className="shadow-lg rounded-xl w-full p-4 flex flex-col md:flex-row gap-6">
+    {/* Sidebar Filters */}
+    <div className="w-full md:w-64 bg-gray-700 rounded-xl p-4 shadow-md flex-shrink-0 text-[#EAEAEA]">
+      <h3 className="font-bold mb-5 text-xl">🔍 Filter Options</h3>
 
-
-          {/* Search by Execution ID (id) */}
-          <form
-            className="mb-4"
-            onSubmit={(e) => {
-              e.preventDefault();
-              fetchResumesByExecutionId();
-            }}
-          >
-            <label className="font-semibold text-gray-600 block mb-2">Case ID</label>
-            <input
-              type="text"
-              placeholder="Enter Case ID"
-              value={executionId}
-              onChange={(e) => setExecutionId(e.target.value)}
-              disabled={loading}
-              className="w-full px-4 py-2 border border-green-300 rounded-md"
-            />
-            <button
-              type="submit"
-              disabled={loading || !executionId.trim()}
-              className="mt-2 bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 w-full disabled:opacity-50"
-            >
-              {loading ? 'Searching...' : 'Search by ID'}
-            </button>
-            {error && <p className="mt-2 text-red-600 text-sm">{error}</p>}
-          </form>
-
-          {/* Other filters */}
-          <input
-            type="text"
-            placeholder="Search ..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            disabled={loading}
-            className="mb-4 px-4 py-3 rounded-lg border border-blue-300 focus:outline-none text-gray-700"
-          />
-
-          <label className="font-semibold text-gray-600 mb-3 block text-lg">Score Range</label>
-          <div className="flex justify-between mb-3 text-gray-900 font-semibold text-sm">
-            <span>{scoreRange[0]}</span>
-            <span>{scoreRange[1]}</span>
-          </div>
-          <Range
-            step={1}
-            min={1}
-            max={10}
-            values={scoreRange}
-            onChange={setScoreRange}
-            renderTrack={({ props, children }) => (
-              <div {...props} style={{ ...props.style, height: '6px', backgroundColor: '#ddd' }}>
-                <div
-                  style={{
-                    height: '6px',
-                    backgroundColor: '#2563eb',
-                    marginLeft: `${((scoreRange[0] - 1) / 9) * 100}%`,
-                    width: `${((scoreRange[1] - scoreRange[0]) / 9) * 100}%`,
-                  }}
-                />
-                {children}
-              </div>
-            )}
-            renderThumb={renderScoreThumb}
-          />
-
-          <label className="font-semibold text-gray-600 mt-6 mb-3 block text-lg">Experience (years)</label>
-          <div className="flex justify-between mb-3 text-gray-900 font-semibold text-sm">
-            <span>{experienceRange[0]}</span>
-            <span>{experienceRange[1]}</span>
-          </div>
-          <Range
-            step={1}
-            min={0}
-            max={35} // max experience set to 50 years
-            values={experienceRange}
-            onChange={setExperienceRange}
-            renderTrack={({ props, children }) => (
-              <div {...props} style={{ ...props.style, height: '6px', background: '#ddd' }}>
-                <div
-                  style={{
-                    height: '6px',
-                    width: `${((experienceRange[1] - experienceRange[0]) / 35) * 100}%`,
-                    backgroundColor: '#2563eb',
-                    marginLeft: `${(experienceRange[0] / 35) * 100}%`,
-                  }}
-                />
-                {children}
-              </div>
-            )}
-            renderThumb={renderScoreThumb}
-          />
-
-          <div className="mt-6 flex flex-row gap-x-6">
-            <label className="inline-flex items-center gap-2 text-gray-600 font-semibold cursor-pointer">
-              <input
-                type="checkbox"
-                checked={filterEmail}
-                onChange={() => setFilterEmail(!filterEmail)}
-                className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                disabled={loading}
-              />
-              Email
-            </label>
-            <label className="inline-flex items-center gap-2 text-gray-600 font-semibold cursor-pointer">
-              <input
-                type="checkbox"
-                checked={filterPhone}
-                onChange={() => setFilterPhone(!filterPhone)}
-                className="rounded border-gray-300 text-blue-600"
-                disabled={loading}
-              />
-              Phone
-            </label>
-          </div>
-          <div className="mt-6">
-  <h3 className="font-bold text-gray-800 mb-3 text-lg">🛠️ Key Skills</h3>
-  <div className="flex flex-wrap gap-2 bg-white border border-blue-200 rounded-md p-3 shadow-inner min-h-[40px]">
-    {allKeySkills.length > 0 ? (
-      allKeySkills.map((skill, idx) => (
-        <span
-          key={idx}
-          className="px-2 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-lg"
+      {/* Search by Execution ID (id) */}
+      <form
+        className="mb-4"
+        onSubmit={(e) => {
+          e.preventDefault();
+          fetchResumesByExecutionId();
+        }}
+      >
+        <label className="font-semibold block mb-2">Case ID</label>
+        <input
+          type="text"
+          placeholder="Enter Case ID"
+          value={executionId}
+          onChange={(e) => setExecutionId(e.target.value)}
+          disabled={loading}
+          className="w-full px-4 py-2 border border-gray-600 bg-white text-gray-600 rounded-md"
+        />
+        <button
+          type="submit"
+          disabled={loading || !executionId.trim()}
+          className="mt-2 bg-orange-400 hover:bg-[#E14A42] text-white font-bold px-4 py-2 rounded-md w-full disabled:opacity-50"
         >
-          {skill}
-        </span>
-      ))
-    ) : (
-      <p className="text-gray-500 text-sm">No key skills available</p>
-    )}
-  </div>
-</div>
-        </div>
+          {loading ? "Searching..." : "Search by ID"}
+        </button>
+        {error && <p className="mt-2 text-red-400 text-sm">{error}</p>}
+      </form>
 
-        {/* Resume List */}
-        <motion.div layout className="flex-1 space-y-6 overflow-auto max-h-[80vh]">
-          <div className="flex items-center justify-between mb-1">
-            <h2 className="text-3xl font-semibold text-gray-700">📄 Talent Sift</h2>
+      {/* Other filters */}
+      <input
+        type="text"
+        placeholder="Search ..."
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        disabled={loading}
+        className="mb-4 px-4 py-3 rounded-lg border border-gray-600 bg-white text-gray-500 focus:outline-none"
+      />
+
+      <label className="font-semibold mb-3 block text-lg">Score Range</label>
+      <div className="flex justify-between mb-3 font-semibold text-sm">
+        <span>{scoreRange[0]}</span>
+        <span>{scoreRange[1]}</span>
+      </div>
+
+      {/* Score range bar (red accent) */}
+      <Range
+        step={1}
+        min={1}
+        max={10}
+        values={scoreRange}
+        onChange={setScoreRange}
+        renderTrack={({ props, children }) => (
+          <div {...props} style={{ ...props.style, height: "6px", backgroundColor: "#555" }}>
+            <div
+              style={{
+                height: "6px",
+                backgroundColor: "#fb923c",
+                marginLeft: `${((scoreRange[0] - 1) / 9) * 100}%`,
+                width: `${((scoreRange[1] - scoreRange[0]) / 9) * 100}%`,
+              }}
+            />
+            {children}
           </div>
-          <div className="flex justify-between items-center mb-4">
-                        <p className="text-orange-500 font-medium">
-              Showing {filteredResumes.length} result{filteredResumes.length !== 1 ? 's' : ''}
-            </p>
-                                    {/* Button at bottom */}
-<div className="w-full flex right-2 mt-8">
-  <button
-    onClick={() =>
-      window.location.href =
-        "https://core.qntrl.com/blueprint/startitnow/job/processtab/30725000001415521/30725000000000419"
-    }
-    className="bg-blue-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-blue-700 transition"
-  >
-    Candidate Management
-  </button>
-</div>
+        )}
+        renderThumb={renderScoreThumb}
+      />
+
+      <label className="font-semibold mt-6 mb-3 block text-lg">Experience (years)</label>
+      <div className="flex justify-between mb-3 font-semibold text-sm">
+        <span>{experienceRange[0]}</span>
+        <span>{experienceRange[1]}</span>
+      </div>
+      <Range
+        step={1}
+        min={0}
+        max={35}
+        values={experienceRange}
+        onChange={setExperienceRange}
+        renderTrack={({ props, children }) => (
+          <div {...props} style={{ ...props.style, height: "6px", backgroundColor: "#555" }}>
+            <div
+              style={{
+                height: "6px",
+                width: `${((experienceRange[1] - experienceRange[0]) / 35) * 100}%`,
+                backgroundColor: "#fb923c",
+                marginLeft: `${(experienceRange[0] / 35) * 100}%`,
+              }}
+            />
+            {children}
           </div>
+        )}
+        renderThumb={renderScoreThumb}
+      />
 
-          {loading && (
-            <p className="text-blue-900 font-semibold text-center">Loading resumes...</p>
-          )}
+      {/* Email/Phone filters */}
+      <div className="mt-6 flex flex-row gap-x-6">
+        <label className="inline-flex items-center gap-2 font-semibold cursor-pointer">
+          <input
+            type="checkbox"
+            checked={filterEmail}
+            onChange={() => setFilterEmail(!filterEmail)}
+            className="rounded border-gray-400 text-[#FF5A52] focus:ring-[#FF5A52]"
+            disabled={loading}
+          />
+          Email
+        </label>
+        <label className="inline-flex items-center gap-2 font-semibold cursor-pointer">
+          <input
+            type="checkbox"
+            checked={filterPhone}
+            onChange={() => setFilterPhone(!filterPhone)}
+            className="rounded border-gray-400 text-[#FF5A52]"
+            disabled={loading}
+          />
+          Phone
+        </label>
+      </div>
 
-          {!loading && filteredResumes.length === 0 && (
-            <p className="text-red-600 font-semibold text-center">No resumes match the filters.</p>
-          )}
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {filteredResumes.map((resume) => (
-              <motion.div
-                key={resume.id}
-                layout
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.2 }}
-                className="bg-white rounded-xl shadow-lg p-5 flex flex-col"
+      {/* Key skills */}
+      <div className="mt-6">
+        <h3 className="font-bold mb-3 text-lg">🛠️ Key Skills</h3>
+        <div className="flex flex-wrap gap-2 bg-white border border-gray-700 rounded-md p-3 shadow-inner min-h-[40px]">
+          {allKeySkills.length > 0 ? (
+            allKeySkills.map((skill, idx) => (
+              <span
+                key={idx}
+                className="px-2 py-1 bg-orange-400 text-white text-xs font-medium rounded-lg"
               >
-                <h3 className="text-xl font-semibold text-blue-900 mb-2">{resume.name}</h3>
-                <p className="text-sm text-blue-700 mb-1">
-                  <strong>Score:</strong> {resume.Rank}
-                </p>
-                <p className="text-sm text-blue-700 mb-1">
-                  <strong>Experience:</strong> {resume.experience} years
-                </p>
-                <p className="text-sm text-blue-700 mb-1">
-                  <strong>Email:</strong> {resume.email}
-                </p>
-                <p className="text-sm text-blue-700 mb-3">
-                  <strong>Phone:</strong> {resume.phone}
-                </p>
- 
-{resume.shortlisted ? (
-  <div className="text-green-700 font-bold">✅ Shortlisted</div>
-) : (
-  <button
-    onClick={() => handleShortlist(resume)}
-    disabled={loadingId === resume.id} // use id here
-    className={`px-4 py-2 rounded transition ${
-      loadingId === resume.id
-        ? "bg-gray-400 cursor-not-allowed"
-        : "bg-green-600 hover:bg-green-700 text-white"
-    }`}
-  >
-    {loadingId === resume.id ? "Sending..." : "Shortlist"}
-  </button>
-)}
-                {resume.justification && (
-                  <p className="text-sm text-gray-700 italic mb-3">"{resume.justification}"</p>
-                )}
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
+                {skill}
+              </span>
+            ))
+          ) : (
+            <p className="text-gray-400 text-sm">No key skills available</p>
+          )}
+        </div>
       </div>
     </div>
-  );
-};
 
-export default ResumeList;
+{/* Resume List */}
+<motion.div layout className="flex-1 space-y-6 overflow-auto max-h-[80vh]">
+  <div className="flex items-center justify-between mb-1">
+    <h2 className="text-3xl font-semibold text-[#333333]">📄 Talent Sift</h2>
+  </div>
+
+  <div className="flex justify-between items-center mb-4">
+    <p className="text-orange-400 font-medium">
+      Showing {filteredResumes.length} result
+      {filteredResumes.length !== 1 ? "s" : ""}
+    </p>
+
+    {/* Navigation Buttons */}
+    <div className="w-full max-w-6xl mb-4 flex gap-4 justify-end">
+      <button
+        type="button"
+        onClick={() => navigate("/")}
+        className="px-4 py-2 bg-orange-400 hover:bg-[#E14A42] text-white font-bold rounded"
+      >
+        Home
+      </button>
+
+      <button
+        onClick={() =>
+          (window.location.href =
+            "https://core.qntrl.com/blueprint/startitnow/job/processtab/30725000001415521/30725000000000419")
+        }
+        className="px-6 py-3 bg-orange-400 hover:bg-[#E14A42] text-white font-bold rounded"
+      >
+        Candidate Management
+      </button>
+    </div>
+  </div>
+
+  {/* Resume Cards */}
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    {filteredResumes.map((resume) => (
+      <motion.div
+        key={resume.id}
+        layout
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.95 }}
+        transition={{ duration: 0.2 }}
+        className="bg-white rounded-xl shadow-md p-5 flex flex-col relative"
+      >
+        {/* ✅ Shortlist Button in top-right */}
+        {!resume.shortlisted && (
+          <button
+            onClick={() => handleShortlist(resume)}
+            disabled={loadingId === resume.id}
+            className={`absolute top-2 right-2 px-3 py-1 rounded-md font-bold text-m transition ${
+              loadingId === resume.id
+                ? "bg-gray-400 cursor-not-allowed text-white"
+                : "bg-orange-400 hover:bg-[#E14A42] text-white"
+            }`}
+          >
+            {loadingId === resume.id ? "..." : "Shortlist"}
+          </button>
+        )}
+
+        {/* ✅ Shortlisted Badge */}
+        {resume.shortlisted && (
+          <div className="absolute top-2 right-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-md shadow">
+            ✅ Shortlisted
+          </div>
+        )}
+
+        {/* Candidate Info */}
+        <h3 className="text-xl font-semibold text-[#333333] mb-2">
+          {resume.name}
+        </h3>
+        <p className="text-sm text-[#333333] mb-1">
+          <strong>Score:</strong> {resume.Rank}
+        </p>
+        <p className="text-sm text-[#333333] mb-1">
+          <strong>Experience:</strong> {resume.experience} years
+        </p>
+        <p className="text-sm text-[#555555] mb-1">
+          <strong>Email:</strong> {resume.email}
+        </p>
+        <p className="text-sm text-[#555555] mb-3">
+          <strong>Phone:</strong> {resume.phone}
+        </p>
+
+        {/* ✅ Justification */}
+        {resume.justification && (
+          <p className="text-sm text-[#555555] italic mt-3 leading-relaxed">
+            "{resume.justification}"
+          </p>
+        )}
+      </motion.div>
+    ))}
+  </div>
+</motion.div>
+  </div>
+  </div>
+  );
+}
+
+export default Existing;
 

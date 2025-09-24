@@ -289,7 +289,7 @@ const JobFormStep1 = ({ formData, handleInputChange, onNewSubmit, onExistingSubm
   </div>
 </div>
 
-                    <div className="space-y-2">
+                    <div className="space-y-2 mb-4">
                       <Label className="flex items-center gap-2">                   
                       <Briefcase className="w-4 h-4" />
                       Industry <span className="text-red-500">*</span>

@@ -24,8 +24,8 @@ Email       : ${results.email || "N/A"}
 Phone       : ${results.phone || "N/A"}
 Experience  : ${results.experience || "N/A"} years
 Score       : ${results.Rank  || results.score || "N/A"}
-Justification:
-${results.justification || "No justification provided."}
+Context:
+${results.justification || "No Context provided."}
 `
 // let arpita = `Candidate Details: 
 // Name        : Arpita

@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useMemo } from 'react'; 
 import { motion } from 'framer-motion';
 import { Range } from 'react-range';
-import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';  // <-- Import useNavigate
+import {  useNavigate } from 'react-router-dom';  // <-- Import useNavigate
+import Footer from "@/components/Footer";
 
 const getRankLabel = (score) => {
   // You can fill this function with labels for scores if needed
@@ -29,7 +30,7 @@ const ResumeList = () => {
       const storedSkills = localStorage.getItem("keySkills");
       const parsedSkills = storedSkills ? JSON.parse(storedSkills) : [];
       setUserKeySkills(Array.isArray(parsedSkills) ? parsedSkills : []);
-      
+
       const storedResumes = localStorage.getItem("resumeResults");
 const parsedResumes = storedResumes ? JSON.parse(storedResumes) : null;
 
@@ -62,53 +63,6 @@ if (parsedResumes && Array.isArray(parsedResumes.result)) {
     }
   }, [resumes, orgId]);
 
-// const handleShortlist = async (candidate) => {
-//   try {
-//     setLoadingId(candidate.candidateId); // mark as sending
-  
-//     const res = await fetch("/api/sendEmail", {
-//       method: "POST",
-//       headers: { "Content-Type": "application/json" },
-//       body: JSON.stringify({
-//         to: "768363363_30725000001415521@startitnow.mail.qntrl.com",
-//         subject: "Shortlisted Candidate",
-//         results: candidate, // send candidate data as array
-//       }),
-//     });
-
-//        const data = await res.json();
-
-//     if (res.ok) {
-//       // ✅ mark candidate as shortlisted in local state shortlist button functionality
-//       setResumes((prev) =>
-//         prev.map((res) =>
-//           res.candidateId === candidate.candidateId
-//             ? { ...res, shortlisted: true }
-//             : res
-//         )
-//       );  
-
-//     let data = null;
-//     try {
-//       data = await res.json();
-//     } catch {
-//       console.error("Response not JSON, raw:", res);
-//     }
-
-//     if (res.ok) {
-//       console.log("Email sent successfully:", data?.message || "OK");
-//       alert(`✅ Candidate ${candidate.name} sent to QNTRL.`);
-//     } else {
-//       console.error("Error sending email:", data?.error || "Unknown error");
-//       alert(`❌ Failed: ${data?.error || "Unknown error"}`);
-//     }
-//   } catch (error) {
-//     console.error("Fetch error:", error);
-//     alert("⚠️ Error sending email. Please try again.");
-//   } finally {
-//     setLoadingId(null); // reset loading state
-//   }
-// };
 
 const handleShortlist = async (candidate) => {
   try {
@@ -174,29 +128,28 @@ const handleShortlist = async (candidate) => {
 }, [searchQuery, scoreRange, experienceRange, filterEmail, filterPhone, resumes]);
 
   const renderThumb = ({ index, props }) => (
-    <div {...props} key={index} className="h-5 w-5 rounded-full bg-blue-600 shadow-md cursor-pointer" />
+    <div {...props} key={index} className="h-5 w-5 rounded-full bg-orange-400 shadow-md cursor-pointer" />
   );
 
   return (
-    <div className="min-h-screen bg-gray-100 p-4 sm:p-6 flex justify-center items-start">
-
-      <div className="bg-white/80 backdrop-blur-md shadow-lg rounded-xl w-full max-w-6xl p-4 sm:p-6 flex flex-col md:flex-row gap-6 md:gap-8">
-
+  
+    <div className="min-h-screen w-full bg-white p-4">
+  <div className="shadow-lg rounded-xl w-full p-4 flex flex-col md:flex-row gap-6">
         {/* Sidebar */}
-        <div className="w-full md:w-64 bg-gray-100 rounded-xl p-4 sm:p-6 shadow-md flex flex-col flex-shrink-0">
-          <h3 className="font-bold text-blue-900 mb-5 text-xl">🔍 Filter Options</h3>
+        <div className="w-full md:w-64 bg-gray-700 rounded-xl p-4 sm:p-6 shadow-md flex flex-col flex-shrink-0">
+          <h3 className="font-bold mb-5 text-xl text-white">🔍 Filter Options</h3>
 
           <input
             type="text"
             placeholder="Search..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="mb-6 px-4 py-3 rounded-lg border border-blue-300 focus:outline-none text-gray-700"
+            className="mb-6 px-4 py-3 rounded-lg border border-blue-300 focus:outline-none text-gray-600"
           />
 
           {/* Score Range */}
-          <label className="font-semibold text-blue-800 mb-3 block text-lg">Score Range</label>
-          <div className="flex justify-between mb-3 text-blue-900 font-semibold text-sm">
+          <label className="font-semibold mb-3 block text-lg text-white">Score Range</label>
+          <div className="flex justify-between mb-3 font-semibold text-sm text-white">
             <span>{scoreRange[0]}</span><span>{scoreRange[1]}</span>
           </div>
           <Range
@@ -206,11 +159,11 @@ const handleShortlist = async (candidate) => {
             values={scoreRange}
             onChange={setScoreRange}
             renderTrack={({ props, children }) => (
-              <div {...props} style={{ ...props.style, height: '6px', backgroundColor: '#ddd' }}>
+              <div {...props} style={{ ...props.style, height: '6px', backgroundColor: '#555' }}>
                 <div
                   style={{
                     height: '6px',
-                    backgroundColor: '#2563eb',
+                    backgroundColor: '#fb923c',
                     marginLeft: `${((scoreRange[0] - 1) / 9) * 100}%`,
                     width: `${((scoreRange[1] - scoreRange[0]) / 9) * 100}%`,
                   }}
@@ -221,8 +174,8 @@ const handleShortlist = async (candidate) => {
             renderThumb={(props) => renderThumb(props, scoreRange)}
           />
 
-          <label className="font-semibold text-blue-800 mt-6 mb-3 block text-lg">Experience (years)</label>
-          <div className="flex justify-between mb-3 text-blue-900 font-semibold text-sm">
+          <label className="font-semibold mt-6 mb-3 block text-lg text-white">Experience (years)</label>
+          <div className="flex justify-between mb-3 font-semibold text-sm text-white">
             <span>{experienceRange[0]}</span>
             <span>{experienceRange[1]}</span>
           </div>
@@ -233,12 +186,12 @@ const handleShortlist = async (candidate) => {
             values={experienceRange}
             onChange={setExperienceRange}
             renderTrack={({ props, children }) => (
-              <div {...props} style={{ ...props.style, height: '6px', background: '#ddd' }}>
+              <div {...props} style={{ ...props.style, height: '6px', background: '#555' }}>
                 <div
                   style={{
                     height: '6px',
                     width: `${((experienceRange[1] - experienceRange[0]) / 35) * 100}%`,
-                    backgroundColor: '#2563eb',
+                    backgroundColor: '#fb923c',
                     marginLeft: `${(experienceRange[0] / 35) * 100}%`,
                   }}
                 />
@@ -250,87 +203,94 @@ const handleShortlist = async (candidate) => {
 
           {/* Email & Phone Filters */}
           <div className="mt-6 flex flex-row gap-x-6">
-            <label className="inline-flex items-center gap-2 text-blue-900 font-semibold cursor-pointer">
+            <label className="inline-flex items-center gap-2 text-white font-semibold cursor-pointer">
               <input
                 type="checkbox"
                 checked={filterEmail}
                 onChange={() => setFilterEmail(!filterEmail)}
-                className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                className="rounded border-gray-400 text-[#FF5A52] focus:ring-[#FF5A52]"
               />
               Email
             </label>
-            <label className="inline-flex items-center gap-2 text-blue-900 font-semibold cursor-pointer">
+            <label className="inline-flex items-center gap-2 text-white font-semibold cursor-pointer">
               <input
                 type="checkbox"
                 checked={filterPhone}
                 onChange={() => setFilterPhone(!filterPhone)}
-                className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                className="rounded border-gray-400 text-[#FF5A52] focus:ring-[#FF5A52]"
               />
               Phone
             </label>
           </div>
 
-          {/* Key Skills */}
-          <div>
-            <h3 className="font-bold text-blue-900 mt-8 mb-3 text-xl">🛠️ Key Skills</h3>
-            <div className="text-sm bg-white border border-blue-200 rounded-md p-3 text-blue-900 shadow-inner min-h-[40px]">
-              {userKeySkills.length > 0 ? userKeySkills.join(', ') : 'No key skills available'}
-            </div>
-          </div>
+{/* Key Skills */}
+<div>
+  <h3 className="font-bold mt-8 mb-3 text-xl text-white">🛠️ Key Skills</h3>
+  <div className="flex flex-wrap gap-2 bg-white border border-gray-300 rounded-md p-3 shadow-inner min-h-[40px]">
+    {userKeySkills.length > 0 ? (
+      userKeySkills.map((skill, index) => (
+        <span
+          key={index}
+          className="bg-orange-400 text-white px-3 py-1 rounded-full text-sm font-medium shadow-sm"
+        >
+          {skill}
+        </span>
+      ))
+    ) : (
+      <span className="text-gray-500">No key skills available</span>
+    )}
+  </div>
+</div>
         </div>
 
-        {/* Resume Results */}
-        <motion.div layout className="flex-1 space-y-6 overflow-auto max-h-[80vh]">
-          <div className="flex items-center justify-between mb-1">
-            <h2 className="text-3xl font-semibold text-blue-900">📄 Talent Sift</h2>
-
-                    {/* ✅ Floating Case ID Display */}
-{caseId && (
-  <div className="top-4 right-2 bg-orange-400 text-white px-4 py-2 rounded-lg shadow-lg text-sm z-50">
-    Case ID: {caseId}
+{/* Resume Results Header */}
+<div className="flex items-start justify-between mb-4">
+  {/* Left Side - Title + Home stacked */}
+  <div className="flex flex-col items-start space-y-2">
+    <h2 className="text-3xl font-semibold text-[#333333]">📄 Talent Sift</h2>
+    <button
+      type="button"
+      onClick={() => navigate("/")}
+      className="px-4 py-2 bg-orange-400 hover:bg-[#E14A42] text-white font-bold rounded"
+    >
+      Home
+    </button>
   </div>
-)}
 
-          </div>
-
-       {/* Back button */}
-      <div className="w-full max-w-6xl mb-4">
-        <button
-        type="button"
-          onClick={() => navigate(-1)}
-          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-        >
-          Home
-        </button>
-
-                  {/* Button at bottom */}
-<div className="w-full flex right-2 mt-8">
-  <button
-    onClick={() =>
-      window.location.href =
-        "https://core.qntrl.com/blueprint/startitnow/job/processtab/30725000001415521/30725000000000419"
-    }
-    className="bg-blue-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-blue-700 transition"
-  >
-    Candidate Management
-  </button>
-</div>
+  {/* Right Side - Case ID + Candidate Button */}
+  <div className="flex flex-col items-end space-y-2">
+    {caseId && (
+      <div className="bg-orange-400 text-white px-4 py-2 rounded-lg shadow-md text-sm">
+        Case ID: {caseId}
       </div>
+    )}
+    <button
+      onClick={() =>
+        (window.location.href =
+          "https://core.qntrl.com/blueprint/startitnow/job/processtab/30725000001415521/30725000000000419")
+      }
+      className="bg-orange-400 hover:bg-orange-600 text-white font-bold px-6 py-2 rounded-lg shadow-md transition"
+    >
+      Candidate Management
+    </button>
+  </div>
+</div>
+        {/* Resume List */}
 
           <div className="flex justify-between items-center mb-4">
-            <p className="text-blue-800 font-medium mb-4">
+            <p className="text-orange-600 font-medium mb-4">
               Showing <span className="font-bold">{filteredResumes.length}</span> of{' '}
               <span className="font-bold">{resumes.length}</span> resumes
             </p>
 
-            <p className="text-blue-800 font-medium">
+            <p className=" text-[#333333]font-medium">
               <span className="font-bold"></span> Score Range 1 - 10
             </p>
           </div>
 
           <ul className="space-y-4">
             {filteredResumes.length === 0 ? (
-              <li className="text-blue-900 italic font-medium">No resumes found.</li>
+              <li className=" text-[#333333] italic font-medium">No resumes found.</li>
             ) : (
               filteredResumes.map((resume) => (
                 <motion.li
@@ -338,11 +298,11 @@ const handleShortlist = async (candidate) => {
                   key={resume.id}
                   className="bg-white rounded-2xl shadow-md p-5 flex flex-col gap-3 border border-blue-200"
                 >
-                  <div className="text-gray-900 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 w-full">
+                  <div className=" text-[#333333] grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 w-full">
                     
-                    <div className="text-2xl font-bold text-blue-900">{resume.name}</div> 
-                    <div className="text-blue-900 font-semibold">Score: {resume.Rank} {getRankLabel(resume.Rank)}</div>
-                    <div className="text-blue-900 font-semibold">Experience: {resume.experience ? `${resume.experience} yrs` : 'null'}</div>
+                    <div className="text-2xl font-bold  text-[#333333]">{resume.name}</div> 
+                    <div className=" text-[#333333] font-semibold">Score: {resume.Rank} {getRankLabel(resume.Rank)}</div>
+                    <div className=" text-[#333333] font-semibold">Experience: {resume.experience ? `${resume.experience} yrs` : 'null'}</div>
 
 {resume.shortlisted ? (
   <div className="text-green-700 font-bold">✅ Shortlisted</div>
@@ -353,7 +313,7 @@ const handleShortlist = async (candidate) => {
     className={`px-4 py-2 rounded transition ${
       loadingId === resume.candidateId
         ? "bg-gray-400 cursor-not-allowed"
-        : "bg-green-600 hover:bg-green-700 text-white"
+        : "bg-orange-600 hover:bg-orange-600 text-white"
     }`}
   >
     {loadingId === resume.candidateId ? "Sending..." : "Shortlist"}
@@ -361,8 +321,8 @@ const handleShortlist = async (candidate) => {
 )}
 
 
-                    <div className="text-blue-700 font-semibold">{resume.phone || 'No phone'}</div>
-                    <div className="text-blue-700 font-semibold">{resume.email || 'No email'}</div>
+                    <div className=" text-[#333333] font-semibold">{resume.phone || 'No phone'}</div>
+                    <div className=" text-[#333333] font-semibold">{resume.email || 'No email'}</div>
                   </div>
 
                   <div className="text-gray-800 mt-2 text-sm whitespace-pre-line">
@@ -372,9 +332,8 @@ const handleShortlist = async (candidate) => {
               ))
             )}
           </ul>
-        </motion.div>
       </div>
-    </div>
+      </div> 
   );
 };
 
