@@ -14,7 +14,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <Route path="/" element={<App />} />
         <Route path="/resumes" element={<ResumeList />} />
         <Route path="/jobform" element={<JobFormStep1 />} />
-        <Route path="/resumelist" element={<ResumeList />} />
+        <Route path="/resumes" element={<Existing />} />
       </Routes>
     </BrowserRouter>
 
