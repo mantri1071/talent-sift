@@ -241,13 +241,15 @@ const handleShortlist = async (candidate) => {
     )}
   </div>
 </div>
+
         </div>
 
-{/* Resume Results Header */}
-<div className="flex items-start justify-between mb-4">
-  {/* Left Side - Title + Home stacked */}
-  <div className="flex flex-col items-start space-y-2">
-    <h2 className="text-3xl font-semibold text-[#333333]">📄 Talent Sift</h2>
+        {/* Resume Results */}
+        <motion.div layout className="flex-1 space-y-6 overflow-auto max-h-[80vh]">
+          <div className="flex items-center justify-between mb-1">
+            <h2 className="text-3xl font-semibold text-[#333333]">📄 Talent Sift</h2>
+              {/* Left Side - Title */}
+  <div className="flex item-start gap-3">
     <button
       type="button"
       onClick={() => navigate("/")}
@@ -257,6 +259,8 @@ const handleShortlist = async (candidate) => {
     </button>
   </div>
 
+ {/* ✅ Floating Case ID + Candidate Button */}
+<div className="flex items-center justify-between mb-4">
   {/* Right Side - Case ID + Candidate Button */}
   <div className="flex flex-col items-end space-y-2">
     {caseId && (
@@ -275,7 +279,8 @@ const handleShortlist = async (candidate) => {
     </button>
   </div>
 </div>
-        {/* Resume List */}
+
+      </div>
 
           <div className="flex justify-between items-center mb-4">
             <p className="text-orange-600 font-medium mb-4">
@@ -332,8 +337,13 @@ const handleShortlist = async (candidate) => {
               ))
             )}
           </ul>
+        </motion.div>
       </div>
-      </div> 
+      {/* Footer */}  
+      <div className="mt-8 ml-1 w-full">
+            <Footer />
+          </div>
+    </div>
   );
 };
 
