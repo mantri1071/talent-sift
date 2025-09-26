@@ -55,7 +55,7 @@ function App() {
       requiredSkills: decodeSafe(params.get('skills') || ''),
       jobDescription: decodeSafe(params.get('job') || ''),
       yearsOfExperience: decodeSafe(params.get('yoe') || ''),
-      jobTitle: decodeSafe(params.get('jobtitle') || ''),
+      jobTitle: decodeSafe(params.get('title') || ''),
       jobType: mappedJobType,  // THIS MUST BE a valid option value or empty string
     }));
   }, []);
