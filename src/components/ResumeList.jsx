@@ -72,7 +72,6 @@ const handleShortlist = async (candidate) => {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        to: "768363363_30725000001270225@startitnow.mail.qntrl.com",
         subject: "Shortlisted Candidate",
         results: candidate, // ✅ must be array
       }),
