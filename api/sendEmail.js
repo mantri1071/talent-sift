@@ -28,8 +28,8 @@ ${results.justification || "No Context provided."}
 `;
 
     const msg = {
-      to: process.env.RECEIVER_EMAIL,   // ✅ always taken from Vercel env
-      from: process.env.SENDER_EMAIL,   // ✅ also better to use env
+      to: process.env.QNTRL_EMAIL,   // ✅ always taken from Vercel env
+      from: process.env.FROM_EMAIL,   // ✅ also better to use env
       subject,
       text: candidateDetails,
     };
