@@ -196,7 +196,7 @@ const JobFormStep1 = ({ formData, handleInputChange, onNewSubmit, onExistingSubm
                     onChange={() => setMode('existing')}
                     disabled={isLoading}
                   />
-                  <span>Existing Case</span>
+                  <span>Candidate Management</span>
                 </label>
               </div>
 
