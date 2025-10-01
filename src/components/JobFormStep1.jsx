@@ -78,7 +78,6 @@ const JobFormStep1 = ({ formData, handleInputChange, onNewSubmit, onExistingSubm
     const newErrors = {};
     if (mode === 'new') {
       if (!formData.jobTitle) newErrors.jobTitle = 'Job Title is required';
-      if (!formData.yearsOfExperience) newErrors.yearsOfExperience = 'Experience is required';
       if (!formData.jobType) newErrors.jobType = 'Job Type is required';
       if (!formData.requiredSkills) newErrors.requiredSkills = 'Please enter one or more skills';
       if (!jobDescriptionIsValid) newErrors.jobDescription = 'Job description must be valid';
@@ -197,7 +196,7 @@ const JobFormStep1 = ({ formData, handleInputChange, onNewSubmit, onExistingSubm
                     onChange={() => setMode('existing')}
                     disabled={isLoading}
                   />
-                  <span>Candidate Management</span>
+                  <span>Candidate Database</span>
                 </label>
               </div>
 
@@ -212,7 +211,7 @@ const JobFormStep1 = ({ formData, handleInputChange, onNewSubmit, onExistingSubm
                   {/* Job Title & Experience */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
-                      <Label className="flex items-center gap-2 font-semibold text-slate-800">                   
+                      <Label className="flex items-center gap-2">                   
                       <Briefcase className="w-4 h-4" />
                       Job Title <span className="text-red-500">*</span>
                     </Label>
@@ -229,7 +228,7 @@ const JobFormStep1 = ({ formData, handleInputChange, onNewSubmit, onExistingSubm
                   <div className="space-y-2">
                     <Label className="flex items-center gap-2 text-slate-800 font-semibold ">
                       <Clock className="w-4 h-4" />
-                      Years of Experience <span className="text-red-500">*</span>
+                      Years of Experience
                     </Label>
                     <Input
                       type="text"
@@ -256,13 +255,23 @@ const JobFormStep1 = ({ formData, handleInputChange, onNewSubmit, onExistingSubm
       <Users className="w-4 h-4" />
       Job Type <span className="text-red-500">*</span>
     </Label>
-    <Input
-      placeholder=" e.g. Full-time, Part-time, Contract"
+    <Select
       value={formData.jobType}
-      onChange={(e) => handleInputChange('jobType', e.target.value)}
-      className="bg-white/70"
+      onValueChange={(value) => handleInputChange('jobType', value)}
       disabled={isLoading}
-    />
+    >
+      <SelectTrigger className="bg-white/70">
+        <SelectValue placeholder="Select job type" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectItem value="full-time">Full Time</SelectItem>
+        <SelectItem value="part-time">Part Time</SelectItem>
+        <SelectItem value="contract">Contract</SelectItem>
+        <SelectItem value="freelance">Freelance</SelectItem>
+        <SelectItem value="internship">Internship</SelectItem>
+      </SelectContent>
+    </Select>
+    {errors.jobType && <p className="text-red-600 text-sm">{errors.jobType}</p>}
   </div>
 
   <div className="space-y-2">
@@ -278,22 +287,22 @@ const JobFormStep1 = ({ formData, handleInputChange, onNewSubmit, onExistingSubm
       disabled={isLoading}
     />
   </div>
-  </div>
+</div>
 
-  
-                <div className="space-y-2 mb-4">
-                <Label className="flex items-center gap-2 text-slate-800 font-semibold ">
-                  Industry <span className="text-red-500">*</span>
-                </Label>
-                <Input
-                  placeholder="e.g. Information Technology, Healthcare"
-                  value={formData.industry}
-                  onChange={(e) => handleInputChange('industry', e.target.value)}
-                  className="bg-white/70 border-gray-300"
-                  disabled={isLoading}
-                />
-                {errors.industry && <p className="text-red-600 text-sm">{errors.industry}</p>}
-              </div>
+                    <div className="space-y-2 mb-4">
+                      <Label className="flex items-center gap-2">                   
+                      <Briefcase className="w-4 h-4" />
+                      Industry <span className="text-red-500">*</span>
+                    </Label>
+                    <Input
+                      placeholder="e.g. Information Technology, Finance, Healthcare"
+                      value={formData.industry}
+                      onChange={(e) => handleInputChange('industry', e.target.value)}
+                      className="bg-white/70"
+                      disabled={isLoading}
+                    />
+                    {errors.industry && <p className="text-red-600 text-sm">{errors.industry}</p>}
+                  </div>
 
 
                 {/* Resume Upload */}
@@ -340,4 +349,3 @@ const JobFormStep1 = ({ formData, handleInputChange, onNewSubmit, onExistingSubm
 };
 
 export default JobFormStep1;
-

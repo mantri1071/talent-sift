@@ -210,7 +210,7 @@ function App() {
             <span className="text-2xl font-serif font-bold text-gray-800">Talent Sift</span>
           </div>
           <div className="absolute top-6 right-0 p-4 flex items-center justify-end space-x-2">
-            <span className="text-s font-serif text-gray-500">Pro Version</span>
+            <span className="text-s font-serif text-gray-500">Beta Version</span>
           </div>
         </div>
 
