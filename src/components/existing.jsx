@@ -262,6 +262,25 @@ const handleShortlist = async (candidate) => {
         {error && <p className="mt-2 text-red-400 text-sm">{error}</p>}
       </form>
 
+            {/* Key skills */}
+      <div className="mt-6">
+        <h3 className="font-bold mb-3 text-lg">🛠️ Key Skills</h3>
+        <div className="flex flex-wrap gap-2 bg-white border border-gray-700 rounded-md p-3 shadow-inner min-h-[40px]">
+          {allKeySkills.length > 0 ? (
+            allKeySkills.map((skill, idx) => (
+              <span
+                key={idx}
+                className="px-2 py-1 bg-orange-400 text-white text-xs font-medium rounded-lg"
+              >
+                {skill}
+              </span>
+            ))
+          ) : (
+            <p className="text-gray-400 text-sm">No key skills available</p>
+          )}
+        </div>
+      </div>
+
       {/* Other filters */}
       <input
         type="text"
@@ -350,25 +369,6 @@ const handleShortlist = async (candidate) => {
           />
           Phone
         </label>
-      </div>
-
-      {/* Key skills */}
-      <div className="mt-6">
-        <h3 className="font-bold mb-3 text-lg">🛠️ Key Skills</h3>
-        <div className="flex flex-wrap gap-2 bg-white border border-gray-700 rounded-md p-3 shadow-inner min-h-[40px]">
-          {allKeySkills.length > 0 ? (
-            allKeySkills.map((skill, idx) => (
-              <span
-                key={idx}
-                className="px-2 py-1 bg-orange-400 text-white text-xs font-medium rounded-lg"
-              >
-                {skill}
-              </span>
-            ))
-          ) : (
-            <p className="text-gray-400 text-sm">No key skills available</p>
-          )}
-        </div>
       </div>
     </div>
 
