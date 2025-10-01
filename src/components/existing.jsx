@@ -262,7 +262,17 @@ const handleShortlist = async (candidate) => {
         {error && <p className="mt-2 text-red-400 text-sm">{error}</p>}
       </form>
 
-            {/* Key skills */}
+      {/* Other filters */}
+      <input
+        type="text"
+        placeholder="Search ..."
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        disabled={loading}
+        className="mb-4 px-4 py-3 rounded-lg border border-gray-600 bg-white text-gray-500 focus:outline-none"
+      />
+
+           {/* Key skills */}
       <div className="mt-6">
         <h3 className="font-bold mb-3 text-lg">🛠️ Key Skills</h3>
         <div className="flex flex-wrap gap-2 bg-white border border-gray-700 rounded-md p-3 shadow-inner min-h-[40px]">
@@ -280,16 +290,6 @@ const handleShortlist = async (candidate) => {
           )}
         </div>
       </div>
-
-      {/* Other filters */}
-      <input
-        type="text"
-        placeholder="Search ..."
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-        disabled={loading}
-        className="mb-4 px-4 py-3 rounded-lg border border-gray-600 bg-white text-gray-500 focus:outline-none"
-      />
 
       <label className="font-semibold mb-3 block text-lg">Score Range</label>
       <div className="flex justify-between mb-3 font-semibold text-sm">
