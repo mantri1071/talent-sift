@@ -146,6 +146,25 @@ const handleShortlist = async (candidate) => {
             className="mb-6 px-4 py-3 rounded-lg border border-blue-300 focus:outline-none text-gray-600"
           />
 
+{/* Key Skills */}
+<div>
+  <h3 className="font-bold mt-8 mb-3 text-xl text-white">🛠️ Key Skills</h3>
+  <div className="flex flex-wrap gap-2 bg-white border border-gray-300 rounded-md p-3 shadow-inner min-h-[40px]">
+    {userKeySkills.length > 0 ? (
+      userKeySkills.map((skill, index) => (
+        <span
+          key={index}
+          className="bg-orange-400 text-white px-3 py-1 rounded-full text-sm font-medium shadow-sm"
+        >
+          {skill}
+        </span>
+      ))
+    ) : (
+      <span className="text-gray-500">No key skills available</span>
+    )}
+  </div>
+</div>
+
           {/* Score Range */}
           <label className="font-semibold mb-3 block text-lg text-white">Score Range</label>
           <div className="flex justify-between mb-3 font-semibold text-sm text-white">
@@ -221,26 +240,6 @@ const handleShortlist = async (candidate) => {
               Phone
             </label>
           </div>
-
-{/* Key Skills */}
-<div>
-  <h3 className="font-bold mt-8 mb-3 text-xl text-white">🛠️ Key Skills</h3>
-  <div className="flex flex-wrap gap-2 bg-white border border-gray-300 rounded-md p-3 shadow-inner min-h-[40px]">
-    {userKeySkills.length > 0 ? (
-      userKeySkills.map((skill, index) => (
-        <span
-          key={index}
-          className="bg-orange-400 text-white px-3 py-1 rounded-full text-sm font-medium shadow-sm"
-        >
-          {skill}
-        </span>
-      ))
-    ) : (
-      <span className="text-gray-500">No key skills available</span>
-    )}
-  </div>
-</div>
-
         </div>
 
         {/* Resume Results */}
