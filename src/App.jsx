@@ -79,7 +79,7 @@ function App() {
 
   // ✅ New Submission
   const handleNewSubmit = async (data) => {
-    if (!data.jobTitle || !data.jobType || !data.jobDescription || !data.email) {
+    if (!data.jobTitle || !data.jobtype || !data.jobDescription || !data.email) {
       toast({
         title: "Missing Information",
         description: "Please fill in all required fields before submitting.",
