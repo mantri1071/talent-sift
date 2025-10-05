@@ -108,6 +108,25 @@ function App() {
       return;
     }
 
+      // --- 1. Validate user email ---
+      const validateRes = await fetch("/api/validateuser", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: data.email }),
+      });
+
+      const validateData = await validateRes.json();
+
+      if (validateRes.status !== 200 || validateData.status !== "success") {
+        toast({
+          title: "Unauthorized",
+          description: validateData.message || "Unauthorized company domain",
+          variant: "destructive",
+        });
+        return;
+      }
+
+
     try {
       const form = new FormData();
 
@@ -154,6 +173,21 @@ function App() {
 
       localStorage.setItem("resumeResults", JSON.stringify(result.data));
     //  localStorage.setItem("resumeResults", JSON.stringify(result.data?.result || []));
+
+      try {
+      await fetch("/api/logToGoogleSheet", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: data.email,
+          resumeCount: data.resumeFiles.length,
+          caseId: result.data?.id || "N/A",
+        }),
+      });
+    } catch (sheetError) {
+      console.warn("⚠️ Failed to log to Google Sheets:", sheetError);
+    }
+
 
       toast({
         title: "Success!",

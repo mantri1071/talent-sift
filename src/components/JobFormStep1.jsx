@@ -295,6 +295,19 @@ const JobFormStep1 = ({ formData, handleInputChange, onNewSubmit, onExistingSubm
                     {errors.industry && <p className="text-red-600 text-sm">{errors.industry}</p>}
                   </div>
 
+ <div className="space-y-2 mb-4">
+    <Label className="flex items-center gap-2 text-slate-800 font-semibold">
+      <GraduationCap className="w-4 h-4" />
+      Email <span className="text-red-500">*</span>
+    </Label>
+    <Input
+      placeholder="enter valid mail id"
+      value={formData.email}
+      onChange={(e) => handleInputChange('email', e.target.value)}
+      className="bg-white/70"
+      disabled={isLoading}
+    />
+  </div>
 
                 {/* Resume Upload */}
                 <ResumeMultiDropzoneStyled
