@@ -16,6 +16,7 @@ function App() {
     jobtype: "",
     industry: "",
     requiredSkills: "",
+    email: "",
     jobDescription: "",
     resumeFiles: [],
   });
@@ -36,19 +37,7 @@ function App() {
         return '';
       }
     };
-  
-    const jobTypeLabel = decodeSafe(params.get('jobtype') || '').trim();
-  
-    // Map labels from URL param to select values exactly
-    const jobTypeMap = {
-      'Full time': 'fulltime',
-      'Part time': 'parttime',
-      'Contract': 'contract',
-      'Freelance': 'freelance',
-      'Internship': 'internship',
-    };
-  
-    const mappedJobType = jobTypeMap[jobTypeLabel] || '';
+ 
   
     setFormData(prev => ({
       ...prev,
@@ -90,7 +79,7 @@ function App() {
 
   // ✅ New Submission
   const handleNewSubmit = async (data) => {
-    if (!data.jobTitle || !data.jobType || !data.jobDescription) {
+    if (!data.jobTitle || !data.jobType || !data.jobDescription || !data.email) {
       toast({
         title: "Missing Information",
         description: "Please fill in all required fields before submitting.",
@@ -108,23 +97,24 @@ function App() {
       return;
     }
 
-      // --- 1. Validate user email ---
-      const validateRes = await fetch("/api/validateuser", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: data.email }),
-      });
 
-      const validateData = await validateRes.json();
+const validateRes = await fetch("/api/validateUser", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ email: data.email }),
+});
 
-      if (validateRes.status !== 200 || validateData.status !== "success") {
-        toast({
-          title: "Unauthorized",
-          description: validateData.message || "Unauthorized company domain",
-          variant: "destructive",
-        });
-        return;
-      }
+const validateData = await validateRes.json();
+
+if (validateRes.status !== 200 || validateData.status !== "success") {
+  toast({
+    title: "Unauthorized",
+    description: validateData.message || "Unauthorized company domain",
+    variant: "destructive",
+  });
+  return;
+}
+
 
 
     try {
