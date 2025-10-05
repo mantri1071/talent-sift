@@ -13,8 +13,8 @@ function App() {
   const [formData, setFormData] = useState({
     jobTitle: "",
     yearsOfExperience: "",
-    jobType: "",
-    location: "",
+    jobtype: "",
+    industry: "",
     requiredSkills: "",
     jobDescription: "",
     resumeFiles: [],
@@ -56,7 +56,8 @@ function App() {
       jobDescription: decodeSafe(params.get('job') || ''),
       yearsOfExperience: decodeSafe(params.get('yoe') || ''),
       jobTitle: decodeSafe(params.get('title') || ''),
-      jobType: mappedJobType,  // THIS MUST BE a valid option value or empty string
+      industry: decodeSafe(params.get('industry') || ''),
+      jobtype: decodeSafe(params.get('jobtype') || ''),  // THIS MUST BE a valid option value or empty string
     }));
   }, []);
   

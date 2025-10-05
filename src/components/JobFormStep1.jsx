@@ -250,29 +250,20 @@ const JobFormStep1 = ({ formData, handleInputChange, onNewSubmit, onExistingSubm
 
                 {/* Job Type & Key Skills */}
 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-5 mb-4">
-  <div className="space-y-2">
+    <div className="space-y-2">
     <Label className="flex items-center gap-2 text-slate-800 font-semibold">
-      <Users className="w-4 h-4" />
-      Job Type <span className="text-red-500">*</span>
+      <GraduationCap className="w-4 h-4" />
+      Job Type<span className="text-red-500">*</span>
     </Label>
-    <Select
-      value={formData.jobType}
-      onValueChange={(value) => handleInputChange('jobType', value)}
+    <Input
+      placeholder=" eg:-Full-time, Part-time, Contract"
+      value={formData.jobtype}
+      onChange={(e) => handleInputChange('jobtype', e.target.value)}
+      className="bg-white/70"
       disabled={isLoading}
-    >
-      <SelectTrigger className="bg-white/70">
-        <SelectValue placeholder="Select job type" />
-      </SelectTrigger>
-      <SelectContent>
-        <SelectItem value="full-time">Full Time</SelectItem>
-        <SelectItem value="part-time">Part Time</SelectItem>
-        <SelectItem value="contract">Contract</SelectItem>
-        <SelectItem value="freelance">Freelance</SelectItem>
-        <SelectItem value="internship">Internship</SelectItem>
-      </SelectContent>
-    </Select>
-    {errors.jobType && <p className="text-red-600 text-sm">{errors.jobType}</p>}
+    />
   </div>
+
 
   <div className="space-y-2">
     <Label className="flex items-center gap-2 text-slate-800 font-semibold">
