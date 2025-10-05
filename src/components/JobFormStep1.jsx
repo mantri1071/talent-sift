@@ -80,7 +80,7 @@ const JobFormStep1 = ({ formData, handleInputChange, onNewSubmit, onExistingSubm
       if (!formData.jobTitle) newErrors.jobTitle = 'Job Title is required';
       if (!formData.jobtype) newErrors.jobtype = 'Job Type is required';
       if (!formData.requiredSkills) newErrors.requiredSkills = 'Please enter one or more skills';
-      if (!formData.JobDescriptionEditor) newErrors.jobDescription = 'Job description must be valid';
+      if (!formData.JobDescriptionEditor) newErrors.JobDescriptionEditor = 'Job description must be valid';
       if (!formData.email) newErrors.email = 'email must be valid';
       if (!formData.resumeFiles || formData.resumeFiles.length === 0) newErrors.resumeFiles = 'At least one resume must be uploaded';
     }
