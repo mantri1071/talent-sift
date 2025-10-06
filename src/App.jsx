@@ -99,7 +99,7 @@ function App() {
     }
 
 
-const validateRes = await fetch("/api/validateUser", {
+const validateRes = await fetch("/api/validateuser", {
   method: "POST",
   headers: { "Content-Type": "application/json" },
   body: JSON.stringify({ email: data.email }),
