@@ -72,12 +72,12 @@ const handleShortlist = async (candidate) => {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        name: candidate.name,
-        email: candidate.email,
-        phone: candidate.phone,
-        experience: candidate.experience,
-        score: candidate.score,
-        description: candidate.description,
+        name: candidate.name || "No name",
+        email: candidate.email || "No email",
+        phone: candidate.phone || "No phone",
+        experience: candidate.experience || "0",
+        score: candidate.score || candidate.Rank || "0",
+        description: candidate.justification || "No description",
       }),
     });
 
