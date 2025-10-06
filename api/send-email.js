@@ -1,7 +1,8 @@
-const sgMail = require("@sendgrid/mail");
+import sgMail from "@sendgrid/mail";
+
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-module.exports = async (req, res) => {
+export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
   }
@@ -48,4 +49,4 @@ ${description}
     console.error("Send email error", error);
     return res.status(500).json({ error: "Failed to send email" });
   }
-};
+}
