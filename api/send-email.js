@@ -1,11 +1,11 @@
 import sgMail from "@sendgrid/mail";
 
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
   }
+
+  sgMail.setApiKey(process.env.SENDGRID_API_KEY); // ✅ Access env safely inside handler
 
   try {
     const { name, email, phone, experience, score, description } = req.body;
@@ -15,9 +15,9 @@ export default async function handler(req, res) {
     }
 
     const msg = {
-      to: "768363363_30725000001300117@startitnow.mail.qntrl.com", // QNTRL email
-      from: "sumanth1mantri@gmail.com", // must be verified in SendGrid
-      subject: ` ${name}`,
+      to: process.env.QNTRL_EMAIL,      // ✅ From Vercel env
+      from: process.env.FROM_EMAIL,     // ✅ From Vercel env (must be verified in SendGrid)
+      subject: `Shortlisted: ${name}`,
       text: `
 Candidate has been shortlisted.
 
@@ -46,7 +46,7 @@ ${description}
 
     return res.status(200).json({ success: true, message: "Email sent to QNTRL" });
   } catch (error) {
-    console.error("Send email error", error);
+    console.error("SendGrid error:", error.response?.body || error.message);
     return res.status(500).json({ error: "Failed to send email" });
   }
 }
