@@ -46,7 +46,8 @@ function App() {
       yearsOfExperience: decodeSafe(params.get('yoe') || ''),
       jobTitle: decodeSafe(params.get('title') || ''),
       industry: decodeSafe(params.get('industry') || ''),
-      jobtype: decodeSafe(params.get('jobtype') || ''),  // THIS MUST BE a valid option value or empty string
+      jobtype: decodeSafe(params.get('jobtype') || ''), 
+      email: decodeSafe(params.get('mail') || ''), // THIS MUST BE a valid option value or empty string
     }));
   }, []);
   

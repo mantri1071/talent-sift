@@ -1,3 +1,5 @@
+// /api/validateUser.js
+
 export default function handler(req, res) {
   if (req.method !== "POST") {
     return res
@@ -6,24 +8,17 @@ export default function handler(req, res) {
   }
 
   const { email } = req.body || {};
-  const sanitizedEmail = email?.trim().toLowerCase();
 
-  if (!sanitizedEmail) {
+  if (!email) {
     return res.status(400).json({ status: "error", message: "Email is required" });
   }
 
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailRegex.test(sanitizedEmail)) {
-    return res.status(400).json({ status: "error", message: "Invalid email format" });
-  }
-
-  const domain = sanitizedEmail.split("@")[1];
+  const domain = email.split("@")[1]?.toLowerCase();
   const allowedDomains = ["startitnow.co.in", "zoho.com"];
 
   if (allowedDomains.includes(domain)) {
     return res.status(200).json({ status: "success", message: "User validated" });
   } else {
-    console.warn(`Unauthorized email attempt: ${email}`);
     return res
       .status(403)
       .json({ status: "error", message: "Unauthorized company domain" });

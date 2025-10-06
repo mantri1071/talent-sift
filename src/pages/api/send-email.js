@@ -16,7 +16,7 @@ module.exports = async (req, res) => {
     const msg = {
       to: "768363363_30725000001300117@startitnow.mail.qntrl.com", // QNTRL email
       from: "sumanth1mantri@gmail.com", // must be verified in SendGrid
-      subject: `Shortlisted Candidate: ${name}`,
+      subject: ` ${name}`,
       text: `
 Candidate has been shortlisted.
 
