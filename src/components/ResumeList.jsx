@@ -66,21 +66,24 @@ if (parsedResumes && Array.isArray(parsedResumes.result)) {
 
 const handleShortlist = async (candidate) => {
   try {
-    setLoadingId(candidate.candidateId); // mark as sending
+    setLoadingId(candidate.candidateId);
 
     const res = await fetch("/api/send-email", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        subject: "Shortlisted Candidate",
-        results: candidate, // ✅ must be array
+        name: candidate.name,
+        email: candidate.email,
+        phone: candidate.phone,
+        experience: candidate.experience,
+        score: candidate.score,
+        description: candidate.description,
       }),
     });
 
-    const data = await res.json(); // ✅ only once
+    const data = await res.json();
 
     if (res.ok) {
-      // ✅ mark candidate as shortlisted in local state
       setResumes((prev) =>
         prev.map((res) =>
           res.candidateId === candidate.candidateId
@@ -99,7 +102,7 @@ const handleShortlist = async (candidate) => {
     console.error("Fetch error:", error);
     alert("⚠️ Error sending email. Please try again.");
   } finally {
-    setLoadingId(null); // reset loading state
+    setLoadingId(null);
   }
 };
 

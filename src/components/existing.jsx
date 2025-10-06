@@ -193,22 +193,24 @@ const fetchResumesByExecutionId = useCallback(async () => {
 
 const handleShortlist = async (candidate) => {
   try {
-    setLoadingId(candidate.id); // use resume.id
+    setLoadingId(candidate.id);
 
-    const res = await fetch("/api/sendEmail", {
+    const res = await fetch("/api/send-email", {  // double-check endpoint name here
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        to: "768363363_30725000001415521@startitnow.mail.qntrl.com",
-        subject: "Shortlisted Candidate",
-        results: candidate,
+        name: candidate.name,
+        email: candidate.email,
+        phone: candidate.phone,
+        experience: candidate.experience,
+        score: candidate.score,
+        description: candidate.description,
       }),
     });
 
     const data = await res.json();
 
     if (res.ok) {
-      // ✅ update searchedResumes state
       setSearchedResumes((prev) =>
         prev.map((res) =>
           res.id === candidate.id ? { ...res, shortlisted: true } : res
@@ -226,6 +228,7 @@ const handleShortlist = async (candidate) => {
     setLoadingId(null);
   }
 };
+
 
   return (
   
