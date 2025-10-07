@@ -8,7 +8,7 @@ const getRankLabel = (score) => {
   // You can fill this function with labels for scores if needed
 };
 
-const ResumeList = () => {
+  const ResumeList =  ({ client }) => {
   const navigate = useNavigate(); // <-- Initialize navigate hook
 
   const [resumes, setResumes] = useState([]);
@@ -23,7 +23,6 @@ const ResumeList = () => {
   const [error, setError] = useState("");
   const [caseId, setCaseId] = useState(null);
   const [loadingId, setLoadingId] = useState(null);
-  const [client, setClient] = useState("");
 
   useEffect(() => {
     try {
@@ -55,6 +54,7 @@ const ResumeList = () => {
       console.error("Error loading or parsing data:", err);
     }
   }, []);
+
 
   useEffect(() => {
     if (resumes.length > 0) {
