@@ -75,6 +75,8 @@ const getRankLabel = (score) => {
           email: candidate.email || "No email",
           phone: candidate.phone || "No phone",
           experience: candidate.experience || "0",
+          industry: candidate.industry || "Not Mentioned",
+          Skills: userKeySkills.join(", ") || "No Skills",
           client: client || "N/A",
           rank: candidate.score || candidate.Rank || "0",
           context: candidate.justification || "No description",
