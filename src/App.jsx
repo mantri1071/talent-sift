@@ -15,6 +15,7 @@ function App() {
     yearsOfExperience: "",
     jobtype: "",
     industry: "",
+    client: "",
     requiredSkills: "",
     email: "",
     jobDescription: "",
@@ -46,6 +47,7 @@ function App() {
       yearsOfExperience: decodeSafe(params.get('yoe') || ''),
       jobTitle: decodeSafe(params.get('title') || ''),
       industry: decodeSafe(params.get('industry') || ''),
+      client: decodeSafe(params.get('client') || ''),
       jobtype: decodeSafe(params.get('jobtype') || ''), 
       email: decodeSafe(params.get('mail') || ''), // THIS MUST BE a valid option value or empty string
     }));
@@ -250,7 +252,7 @@ if (validateRes.status !== 200 || validateData.status !== "success") {
               onExistingSubmit={handleExistingSubmit}
             />
           ) : (
-            <ResumeList />
+            <ResumeList client={formData.client}/>
           )}
         </div>
 

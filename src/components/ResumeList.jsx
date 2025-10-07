@@ -23,6 +23,7 @@ const ResumeList = () => {
   const [error, setError] = useState("");
   const [caseId, setCaseId] = useState(null);
   const [loadingId, setLoadingId] = useState(null);
+  const [client, setClient] = useState("");
 
   useEffect(() => {
     try {
@@ -32,25 +33,24 @@ const ResumeList = () => {
       setUserKeySkills(Array.isArray(parsedSkills) ? parsedSkills : []);
 
       const storedResumes = localStorage.getItem("resumeResults");
-const parsedResumes = storedResumes ? JSON.parse(storedResumes) : null;
+      const parsedResumes = storedResumes ? JSON.parse(storedResumes) : null;
 
-if (parsedResumes && Array.isArray(parsedResumes.result)) {
-  const mapped = parsedResumes.result.map((item, index) => ({
-    orgId: parsedResumes.id,
-    exeName: parsedResumes.exe_name,
-    candidateId: index + 1,
-    name: item.name || `Candidate ${index + 1}`,
-    Rank: item.score || 0,
-    justification: item.justification || "",
-    experience: typeof item.experience === "number" ? item.experience : 0,
-    email: item.email === "xxx" || !item.email ? "No email" : item.email,
-    phone: item.phone === "xxx" || !item.phone ? "No phone" : item.phone,
-  }));
+      if (parsedResumes && Array.isArray(parsedResumes.result)) {
+        const mapped = parsedResumes.result.map((item, index) => ({
+          orgId: parsedResumes.id,
+          exeName: parsedResumes.exe_name,
+          candidateId: index + 1,
+          name: item.name || `Candidate ${index + 1}`,
+          Rank: item.score || 0,
+          justification: item.justification || "",
+          experience: typeof item.experience === "number" ? item.experience : 0,
+          email: item.email === "xxx" || !item.email ? "No email" : item.email,
+          phone: item.phone === "xxx" || !item.phone ? "No phone" : item.phone,
+        }));
 
-  setResumes(mapped);
-  setCaseId(parsedResumes.id);
-}
- 
+        setResumes(mapped);
+        setCaseId(parsedResumes.id);
+      }
     } catch (err) {
       console.error("Error loading or parsing data:", err);
     }
@@ -63,48 +63,48 @@ if (parsedResumes && Array.isArray(parsedResumes.result)) {
     }
   }, [resumes, orgId]);
 
+  const handleShortlist = async (candidate) => {
+    try {
+      setLoadingId(candidate.candidateId);
 
-const handleShortlist = async (candidate) => {
-  try {
-    setLoadingId(candidate.candidateId);
+      const res = await fetch("/api/send-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: candidate.name || "No name",
+          email: candidate.email || "No email",
+          phone: candidate.phone || "No phone",
+          experience: candidate.experience || "0",
+          client: client || "N/A",
+          rank: candidate.score || candidate.Rank || "0",
+          context: candidate.justification || "No description",
+        }),
+      });
 
-    const res = await fetch("/api/send-email", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        name: candidate.name || "No name",
-        email: candidate.email || "No email",
-        phone: candidate.phone || "No phone",
-        experience: candidate.experience || "0",
-        score: candidate.score || candidate.Rank || "0",
-        description: candidate.justification || "No description",
-      }),
-    });
+      const data = await res.json();
 
-    const data = await res.json();
+      if (res.ok) {
+        setResumes((prev) =>
+          prev.map((res) =>
+            res.candidateId === candidate.candidateId
+              ? { ...res, shortlisted: true }
+              : res
+          )
+        );
 
-    if (res.ok) {
-      setResumes((prev) =>
-        prev.map((res) =>
-          res.candidateId === candidate.candidateId
-            ? { ...res, shortlisted: true }
-            : res
-        )
-      );
-
-      console.log("Email sent successfully:", data?.message || "OK");
-      alert(`✅ Candidate ${candidate.name} sent to QNTRL.`);
-    } else {
-      console.error("Error sending email:", data?.error || "Unknown error");
-      alert(`❌ Failed: ${data?.error || "Unknown error"}`);
+        console.log("Email sent successfully:", data?.message || "OK");
+        alert(`✅ Candidate ${candidate.name} sent to QNTRL.`);
+      } else {
+        console.error("Error sending email:", data?.error || "Unknown error");
+        alert(`❌ Failed: ${data?.error || "Unknown error"}`);
+      }
+    } catch (error) {
+      console.error("Fetch error:", error);
+      alert("⚠️ Error sending email. Please try again.");
+    } finally {
+      setLoadingId(null);
     }
-  } catch (error) {
-    console.error("Fetch error:", error);
-    alert("⚠️ Error sending email. Please try again.");
-  } finally {
-    setLoadingId(null);
-  }
-};
+  };
 
 
   const filteredResumes = useMemo(() => {
