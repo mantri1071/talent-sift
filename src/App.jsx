@@ -187,7 +187,14 @@ if (validateRes.status !== 200 || validateData.status !== "success") {
         description: "✅ Resumes processed successfully.",
       });
 
-      navigate("/resumes");
+const params = new URLSearchParams({
+  client: data.client || "",
+  industry: data.industry || "",
+  skills: data.requiredSkills || "",
+}).toString();
+
+navigate(`/resumes?${params}`);
+
     } catch (error) {
       console.error("❌ Upload failed:", error);
       toast({
