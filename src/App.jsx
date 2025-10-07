@@ -252,7 +252,10 @@ if (validateRes.status !== 200 || validateData.status !== "success") {
               onExistingSubmit={handleExistingSubmit}
             />
           ) : (
-            <ResumeList client={formData.client}/>
+            <ResumeList 
+            client={formData.client}
+            industry={formData.industry}
+            requiredSkills={formData.requiredSkills}/>
           )}
         </div>
 

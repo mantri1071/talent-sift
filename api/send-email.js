@@ -43,7 +43,7 @@ ${description}
         <p><b>Client:</b> ${client}</p>
         <p><b>Skills:</b> ${Skills}</p>
         <p><b>Score:</b> ${score}</p>
-        <h3>Description:</h3>
+        <h3>Context:</h3>
         <p>${description}</p>
       `,
     };

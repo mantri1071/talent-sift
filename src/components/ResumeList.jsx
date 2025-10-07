@@ -8,7 +8,7 @@ const getRankLabel = (score) => {
   // You can fill this function with labels for scores if needed
 };
 
-  const ResumeList =  ({ client }) => {
+  const ResumeList =  ({ client, industry, requiredskills }) => {
   const navigate = useNavigate(); // <-- Initialize navigate hook
 
   const [resumes, setResumes] = useState([]);
@@ -70,17 +70,20 @@ const getRankLabel = (score) => {
       const res = await fetch("/api/send-email", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: candidate.name || "No name",
-          email: candidate.email || "No email",
-          phone: candidate.phone || "No phone",
-          experience: candidate.experience || "0",
-          industry: candidate.industry || "Not Mentioned",
-          Skills: userKeySkills.join(", ") || "No Skills",
-          client: client || "N/A",
-          rank: candidate.score || candidate.Rank || "0",
-          context: candidate.justification || "No description",
-        }),
+body: JSON.stringify({
+  name: candidate.name || "No name",
+  email: candidate.email || "No email",
+  phone: candidate.phone || "No phone",
+  experience: candidate.experience || "0",
+  score: candidate.Rank || candidate.score || "0",
+  industry: industry || "Not Mentioned",
+  client: client || "N/A",
+  Skills:
+    userKeySkills.join(", ") ||
+    requiredskills ||
+    "No Skills",
+  description: candidate.justification || "No context provided",
+}),
       });
 
       const data = await res.json();
