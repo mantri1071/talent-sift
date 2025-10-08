@@ -66,6 +66,8 @@ const getRankLabel = (score) => {
   const handleShortlist = async (candidate) => {
     try {
       setLoadingId(candidate.candidateId);
+     client = localStorage.getItem("client") || "N/A";
+     industry = localStorage.getItem("industry") || "Not Mentioned";
 
       const res = await fetch("/api/send-email", {
         method: "POST",

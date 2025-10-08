@@ -84,8 +84,8 @@ function App() {
   // ✅ New Submission
   const handleNewSubmit = async (data) => {
 console.log("success" + JSON.stringify(data));
-    // localStorage.setItem("industry", decodeSafe(params.get('industry') || ''));
-    //  localStorage.setItem("client", decodeSafe(params.get('client') || ''));
+    localStorage.setItem("industry", data.industry);
+    localStorage.setItem("client", data.client);
     localStorage.setItem("succees",JSON.stringify(data));
 
     if (!data.jobTitle || !data.jobtype || !data.jobDescription || !data.email || !data.client || !data.industry) {
