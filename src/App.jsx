@@ -30,7 +30,8 @@ function App() {
   // Auto-populate jobDescription and requiredSkills from URL params on mount
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-  
+    localStorage.setItem("industry", decodeSafe(params.get('industry') || ''));
+     localStorage.setItem("client", decodeSafe(params.get('client') || ''));
     const decodeSafe = (str) => {
       try {
         return decodeURIComponent(str);
@@ -82,7 +83,9 @@ function App() {
 
   // ✅ New Submission
   const handleNewSubmit = async (data) => {
-    if (!data.jobTitle || !data.jobtype || !data.jobDescription || !data.email) {
+console.log("success" + JSON.stringify(data));
+
+    if (!data.jobTitle || !data.jobtype || !data.jobDescription || !data.email || !data.client || !data.industry) {
       toast({
         title: "Missing Information",
         description: "Please fill in all required fields before submitting.",
