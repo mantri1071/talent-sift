@@ -308,7 +308,6 @@ if (!formData.jobDescription || !jobDescriptionIsValid) {
     type="email"
     placeholder="you@company.com"
     value={formData.email}
-    readOnly
     className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight bg-gray-100 cursor-not-allowed"
   />
 </div>
