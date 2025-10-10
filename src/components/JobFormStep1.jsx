@@ -303,7 +303,7 @@ if (!formData.jobDescription || !jobDescriptionIsValid) {
   <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
     Work Email <span className="text-red-500">*</span>
   </label>
-  <input
+  <Input
     id="email"
     name="email"
     type="email"
