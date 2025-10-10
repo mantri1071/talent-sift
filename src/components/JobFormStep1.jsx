@@ -84,6 +84,7 @@ if (!formData.jobDescription || !jobDescriptionIsValid) {
   newErrors.jobDescription = 'Job description must be between 100 and 200 words';
 }
       if (!formData.industry) newErrors.industry = 'Industry is required';
+      if (!formData.email) newErrors.email = 'email is required';
       if (!formData.resumeFiles || formData.resumeFiles.length === 0) newErrors.resumeFiles = 'At least one resume must be uploaded';
     }
     setErrors(newErrors);
@@ -306,10 +307,14 @@ if (!formData.jobDescription || !jobDescriptionIsValid) {
     id="email"
     name="email"
     type="email"
+    onChange={(e) => handleInputChange('email', e.target.value)}
     placeholder="you@company.com"
     value={formData.email}
-    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight bg-gray-100 cursor-not-allowed"
-  />
+    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white/70"
+    disabled={isLoading}
+    required
+    />
+    {errors.email && <p className="text-red-600 text-sm">{errors.email}</p>}
 </div>
 
 
