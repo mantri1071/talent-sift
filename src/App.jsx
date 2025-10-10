@@ -272,6 +272,7 @@ navigate(`/resumes?${params}`);
             <ResumeList 
             client={formData.client}
             industry={formData.industry}
+            owner={formData.owner}
             requiredSkills={formData.requiredSkills}/>
           )}
         </div>

@@ -8,7 +8,7 @@ const getRankLabel = (score) => {
   // You can fill this function with labels for scores if needed
 };
 
-  const ResumeList =  ({ client, industry, requiredskills }) => {
+  const ResumeList =  ({ client, industry, requiredskills, owner }) => {
   const navigate = useNavigate(); // <-- Initialize navigate hook
 
   const [resumes, setResumes] = useState([]);
@@ -79,6 +79,7 @@ body: JSON.stringify({
   experience: candidate.experience || "0",
   score: candidate.Rank || candidate.score || "0",
   industry: industry || "Not Mentioned",
+  owner: owner || "Not Mentioned",
   client: client || "N/A",
   Skills:
     userKeySkills.join(", ") ||
