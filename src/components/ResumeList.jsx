@@ -68,6 +68,7 @@ const getRankLabel = (score) => {
       setLoadingId(candidate.candidateId);
      client = localStorage.getItem("client") || "N/A";
      industry = localStorage.getItem("industry") || "Not Mentioned";
+     owner = localStorage.getItem("owner") || "Not Mentioned";
 
       const res = await fetch("/api/send-email", {
         method: "POST",
