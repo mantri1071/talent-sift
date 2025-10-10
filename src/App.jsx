@@ -17,6 +17,7 @@ function App() {
     industry: "",
     client: "",
     requiredSkills: "",
+    owner: "",
     email: "",
     jobDescription: "",
     resumeFiles: [],
@@ -48,6 +49,7 @@ function App() {
       yearsOfExperience: decodeSafe(params.get('yoe') || ''),
       jobTitle: decodeSafe(params.get('title') || ''),
       industry: decodeSafe(params.get('industry') || ''),
+      owner: decodeSafe(params.get('owner') || ''),
       client: decodeSafe(params.get('client') || ''),
       jobtype: decodeSafe(params.get('jobtype') || ''), 
       email: decodeSafe(params.get('mail') || ''), // THIS MUST BE a valid option value or empty string
@@ -86,9 +88,10 @@ function App() {
 console.log("success" + JSON.stringify(data));
     localStorage.setItem("industry", data.industry);
     localStorage.setItem("client", data.client);
+    localStorage.setItem("owner", data.owner);
     localStorage.setItem("succees",JSON.stringify(data));
 
-    if (!data.jobTitle || !data.jobtype || !data.jobDescription || !data.email || !data.client || !data.industry) {
+    if (!data.jobTitle || !data.jobtype || !data.jobDescription || !data.email || !data.client || !data.industry || !data.owner) {
       toast({
         title: "Missing Information",
         description: "Please fill in all required fields before submitting.",
@@ -196,6 +199,7 @@ if (validateRes.status !== 200 || validateData.status !== "success") {
 const params = new URLSearchParams({
   client: data.client || "",
   industry: data.industry || "",
+  owner: data.owner || "",
   skills: data.requiredSkills || "",
 }).toString();
 

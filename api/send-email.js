@@ -8,7 +8,7 @@ export default async function handler(req, res) {
   sgMail.setApiKey(process.env.SENDGRID_API_KEY); // ✅ Access env safely inside handler
 
   try {
-    const { name, email, phone, experience, score, Skills, client, industry,  description } = req.body;
+    const { name, email, phone, experience, score, Skills, client, industry, owner,  description } = req.body;
 
     if (!name || !email) {
       return res.status(400).json({ error: "Missing candidate details" });
@@ -27,6 +27,7 @@ Phone: ${phone}
 Experience: ${experience} years
 Score: ${score}
 Industry: ${industry}
+Owner: ${owner}
 Client: ${client}
 Skills: ${Skills}
 
@@ -40,6 +41,7 @@ ${description}
         <p><b>Phone:</b> ${phone}</p>
         <p><b>Experience:</b> ${experience} years</p>
         <p><b>Industry:</b> ${industry}</p>
+        <p><b>Owner:</b> ${owner}</p>
         <p><b>Client:</b> ${client}</p>
         <p><b>Skills:</b> ${Skills}</p>
         <p><b>Score:</b> ${score}</p>
