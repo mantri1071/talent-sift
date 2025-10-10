@@ -17,7 +17,7 @@ export default async function handler(req, res) {
     const msg = {
       to: process.env.QNTRL_EMAIL,      // ✅ From Vercel env
       from: process.env.FROM_EMAIL,     // ✅ From Vercel env (must be verified in SendGrid)
-      subject: `Shortlisted: ${name}`,
+      subject: `${name}`,
       text: `
 Candidate has been shortlisted.
 
